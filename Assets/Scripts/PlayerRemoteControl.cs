@@ -15,15 +15,16 @@ public class PlayerRemoteControl : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (Input.GetAxis("Vertical") != 0)
-        {
             forwards = Input.GetAxis("Vertical");
-        }
         if (Input.GetAxis("Horizontal") != 0)
         {
             turn = Input.GetAxis("Horizontal");
+        }
+        else if (Input.GetAxis("Horizontal") == 0)
+        {
+            turn = 0;
         }
 
         myCarController.ChangeSpeed(forwards);

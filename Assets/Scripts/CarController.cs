@@ -19,20 +19,43 @@ public class CarController : MonoBehaviour
     public int lapCounter = 0;
     [Header("Other")]
     public bool stopAtWall = true;
-    public float rngSpeed = 1;
+    public float rngSpeedAccel = 1;
+    public float rngSpeedmax = 1;
+    public float timeSinceLastCheck = 0;
+    public float resetTime = 1;
     [Header("Current Place")]
     public int currentPlace = 0;
     public Text placement;
     // Start is called before the first frame update
     void Start()
     {
-        rngSpeed = Random.Range(95, 105);
-        rngSpeed = rngSpeed / 10;
+        rngSpeedAccel = Random.Range(-1,1);
+        accel = accel + rngSpeedAccel;
+        if (rngSpeedAccel > 0)
+        {
+            rngSpeedmax = Random.Range(-0.5f, 0);
+        }
+        else if (rngSpeedAccel < 0)
+        {
+            rngSpeedmax = Random.Range(0, 0.5f);
+        }
+        else
+        {
+            rngSpeedmax = Random.Range(-0.5f, 0.5f);
+        }
+        maxSpeed = maxSpeed + rngSpeedmax;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        timeSinceLastCheck = timeSinceLastCheck + Time.deltaTime;
+        if (gameObject.GetComponent<ItemScript>().isAI == true && timeSinceLastCheck >= resetTime)
+        {
+            Debug.Log("Grrrrr");
+            gameObject.GetComponent<Transform>().position = currentCheckpoint.transform.position;
+            timeSinceLastCheck = 0;
+        }
         Vector3 velocity = Vector3.forward * speed;
         transform.Translate(velocity * Time.deltaTime, Space.Self);
         if (checkPointCounter >= checkPoints.Length)
@@ -114,11 +137,19 @@ public class CarController : MonoBehaviour
         if (other.gameObject == currentCheckpoint)
         {
             checkPointCounter++;
+            timeSinceLastCheck = 0;
         }
         if (checkPointCounter >= checkPoints.Length - 1 && other.gameObject.CompareTag("Finish"))
         {
             checkPointCounter = 0;
             lapCounter++;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Spawner"))
+        {
+            other.GetComponent<PowerupSpawner>().SpawnBox();
         }
     }
 }

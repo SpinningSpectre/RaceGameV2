@@ -8,6 +8,8 @@ TagManager:
   - NotBounce
   - CheckPoint
   - SpeedBoost
+  - PowerBox
+  - Spawner
   layers:
   - Default
   - TransparentFX

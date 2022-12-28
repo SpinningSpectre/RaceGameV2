@@ -1,10 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class IconManager : MonoBehaviour
 {
+    public int[] rankingNumber;
+    public Text[] rankingText;
+    public Image[] carImages;
+    public Sprite[] carImageSprites;
+    public GameObject[] cars;
+    [SerializeField]
+    CarController carController;
+    [SerializeField]
+    public List<GameObject> allCars;
+    [SerializeField]
+    List<Sprite> spriteRanking; 
     [Header("Transforms")]
     public RectTransform noItems;
     public RectTransform powerupLocation;
@@ -18,13 +32,26 @@ public class IconManager : MonoBehaviour
     {
         UnEquipAllItems();
     }
+    private void Awake()
+    {
+        for (int i = 0; i < cars.Length; i++)
+        {
+            allCars.Add(cars[i]);
+            spriteRanking.Add(carImageSprites[i]);
+        }
+    }
     void UnEquipAllItems()
     {
         UnEquipUI(0);
     }
     private void Update()
     {
-
+        allCars = allCars.ToList().OrderByDescending(x => x.GetComponent<CarController>().counterUI).ToList();
+        for (int i = 0; i < allCars.Count; i++)
+        {
+            rankingText[i].text = " " + rankingNumber[i] + ". " + allCars[i].name;
+            carImages[i].sprite = allCars[i].GetComponent<CarController>().sprite_name_idfk_ask_mike;
+        }
     }
     public void EquipPowerup(int powerUpNumber)
     {

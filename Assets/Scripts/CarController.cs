@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,7 @@ public class CarController : MonoBehaviour
     public GameObject currentCheckpoint;
     public int checkPointCounter = 0;
     public int lapCounter = 0;
+    public int winCount = 3;
     [Header("Other")]
     public bool stopAtWall = true;
     public float rngSpeedAccel = 1;
@@ -26,9 +28,28 @@ public class CarController : MonoBehaviour
     [Header("Current Place")]
     public int currentPlace = 0;
     public Text placement;
+    public int lapCountUI;
+    [SerializeField]
+    float checkPointDistance;
+    float counter;
+    public float counterUI;
+    float totalWayPoints;
+    public bool isAI;
+    public int lessCheckpoints;
+    public int extraPointTime;
+    public Sprite sprite_name_idfk_ask_mike;
+    MoneyManager moneyManager;
+    SaveData saveData;
+    string activeUpgrade;
+    SceneLoader loader;
+    IconManager iconManager;
+    EndingManager endingManager;
+    public bool won = false;
+
     // Start is called before the first frame update
     void Start()
     {
+        currentCheckpoint = checkPoints[0];
         rngSpeedAccel = Random.Range(-1,1);
         accel = accel + rngSpeedAccel;
         if (rngSpeedAccel > 0)
@@ -44,11 +65,45 @@ public class CarController : MonoBehaviour
             rngSpeedmax = Random.Range(-0.5f, 0.5f);
         }
         maxSpeed = maxSpeed + rngSpeedmax;
+        loader = FindObjectOfType<SceneLoader>();
+        iconManager = FindObjectOfType<IconManager>();
+        endingManager = FindObjectOfType<EndingManager>();
+        if (isAI == false)
+        {
+            saveData = FindObjectOfType<SaveData>();
+            moneyManager = FindObjectOfType<MoneyManager>();
+            activeUpgrade = saveData.upgrade;
+            if (activeUpgrade != "")
+            {
+                Debug.Log("Has up");
+                Debug.Log(activeUpgrade);
+                if (activeUpgrade == "test")
+                {
+                    Debug.Log("Has SPEEEEEEEEEEEEEEED");
+                    maxSpeed = maxSpeed + 50;
+                    accel = accel + 10;
+                }
+            }
+            else
+            {
+                Debug.Log("No up");
+            }
+        }
     }
-
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (checkPointCounter - 1 >= 0)
+        {
+            checkPointDistance = Vector3.Distance(checkPoints[checkPointCounter - 1].transform.position, transform.position);
+        }
+        counter = lapCounter * 10000 + totalWayPoints * 1000 + checkPointDistance;
+        if (isAI == false && checkPointCounter >= extraPointTime)
+        {
+            Debug.Log("AAAAAAAAAAAA");
+            counter = counter + lessCheckpoints * 1000;
+        }
+        counterUI = counter;
         timeSinceLastCheck = timeSinceLastCheck + Time.deltaTime;
         if (gameObject.GetComponent<ItemScript>().isAI == true && timeSinceLastCheck >= resetTime)
         {
@@ -58,11 +113,33 @@ public class CarController : MonoBehaviour
         }
         Vector3 velocity = Vector3.forward * speed;
         transform.Translate(velocity * Time.deltaTime, Space.Self);
-        if (checkPointCounter >= checkPoints.Length)
+        if (checkPointCounter > checkPoints.Length)
         {
             checkPointCounter = 0;
         }
         currentCheckpoint = checkPoints[checkPointCounter];
+        if (isAI == false && lapCounter >= winCount || endingManager.carsEnded == 3)
+        {
+            if (iconManager.allCars[1] == iconManager.cars[0] || iconManager.allCars[2] == iconManager.cars[0] || iconManager.allCars[0] == iconManager.cars[0])
+            {
+                Debug.Log("123");
+                moneyManager.GainMoney(100);
+            }
+            else if(iconManager.allCars[3] == iconManager.cars[0] || iconManager.allCars[4] == iconManager.cars[0] || iconManager.allCars[5] == iconManager.cars[0])
+            {
+                Debug.Log("456");
+                moneyManager.GainMoney(50);
+            }
+            else
+            {
+                moneyManager.GainMoney(10);
+            }
+            loader.LoadScene("SampleScene");
+        }else if (isAI == true && endingManager.carsEnded != 5 && lapCounter == winCount && won == false)
+        {
+            won = true;
+            endingManager.carsEnded++;
+        }
     }
     public void ChangeSpeed(float throttle)
     {
@@ -88,10 +165,6 @@ public class CarController : MonoBehaviour
     public void Turn(float direction)
     {
         transform.Rotate(0, direction * turnSpeed * Time.deltaTime, 0);
-    }
-    public void ChangePlacement()
-    {
-        //placement.text = currentPlace.ToString();
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -137,11 +210,17 @@ public class CarController : MonoBehaviour
         if (other.gameObject == currentCheckpoint)
         {
             checkPointCounter++;
+            totalWayPoints++;
             timeSinceLastCheck = 0;
         }
         if (checkPointCounter >= checkPoints.Length - 1 && other.gameObject.CompareTag("Finish"))
         {
+            Debug.Log("Oh hell nahh");
             checkPointCounter = 0;
+            if (isAI == false)
+            {
+                moneyManager.GainMoney(10);
+            }
             lapCounter++;
         }
     }

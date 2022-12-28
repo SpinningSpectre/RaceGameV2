@@ -4338,6 +4338,90 @@ Transform:
   m_Father: {fileID: 665158295}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 100.76401, y: 72.268, z: -194.842}
+--- !u!1 &581409777
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 581409782}
+  - component: {fileID: 581409781}
+  - component: {fileID: 581409780}
+  - component: {fileID: 581409779}
+  - component: {fileID: 581409778}
+  m_Layer: 0
+  m_Name: SceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &581409778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581409777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e555907c7da2f2243a7985a6e73163b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &581409779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581409777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 900ebcbf8fb4582408ae1428807cd35a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  money: 0
+--- !u!114 &581409780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581409777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01e44a2f2966b544890a0aa576fe5d71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &581409781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581409777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b033a5a8f333ad41adf9c35646582ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &581409782
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 581409777}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 38.343792, y: 1.0546824, z: -377.7289}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 23
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &591235350
 GameObject:
   m_ObjectHideFlags: 0
@@ -6198,9 +6282,19 @@ MonoBehaviour:
   checkPointCounter: 0
   lapCounter: 0
   stopAtWall: 0
-  rngSpeed: 1
+  rngSpeedAccel: 1
+  rngSpeedmax: 1
+  timeSinceLastCheck: 0
+  resetTime: 1
   currentPlace: 0
   placement: {fileID: 65941613}
+  lapCountUI: 0
+  checkPointDistance: 0
+  counterUI: 0
+  isAI: 0
+  lessCheckpoints: 0
+  extraPointTime: 0
+  sprite_name_idfk_ask_mike: {fileID: 0}
 --- !u!65 &911506308
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7345,9 +7439,19 @@ MonoBehaviour:
   checkPointCounter: 0
   lapCounter: 0
   stopAtWall: 0
-  rngSpeed: 1
+  rngSpeedAccel: 1
+  rngSpeedmax: 1
+  timeSinceLastCheck: 0
+  resetTime: 1
   currentPlace: 0
   placement: {fileID: 272744813}
+  lapCountUI: 0
+  checkPointDistance: 0
+  counterUI: 0
+  isAI: 0
+  lessCheckpoints: 0
+  extraPointTime: 0
+  sprite_name_idfk_ask_mike: {fileID: 0}
 --- !u!65 &1016891709
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7513,9 +7617,19 @@ MonoBehaviour:
   checkPointCounter: 0
   lapCounter: 0
   stopAtWall: 0
-  rngSpeed: 1
+  rngSpeedAccel: 1
+  rngSpeedmax: 1
+  timeSinceLastCheck: 0
+  resetTime: 1
   currentPlace: 0
   placement: {fileID: 29901930}
+  lapCountUI: 0
+  checkPointDistance: 0
+  counterUI: 0
+  isAI: 0
+  lessCheckpoints: 0
+  extraPointTime: 0
+  sprite_name_idfk_ask_mike: {fileID: 0}
 --- !u!65 &1048183627
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8839,9 +8953,19 @@ MonoBehaviour:
   checkPointCounter: 0
   lapCounter: 0
   stopAtWall: 0
-  rngSpeed: 1
+  rngSpeedAccel: 1
+  rngSpeedmax: 1
+  timeSinceLastCheck: 0
+  resetTime: 1
   currentPlace: 0
   placement: {fileID: 738128397}
+  lapCountUI: 0
+  checkPointDistance: 0
+  counterUI: 0
+  isAI: 0
+  lessCheckpoints: 0
+  extraPointTime: 0
+  sprite_name_idfk_ask_mike: {fileID: 0}
 --- !u!65 &1176567110
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10110,9 +10234,19 @@ MonoBehaviour:
   checkPointCounter: 0
   lapCounter: 0
   stopAtWall: 0
-  rngSpeed: 1
+  rngSpeedAccel: 1
+  rngSpeedmax: 1
+  timeSinceLastCheck: 0
+  resetTime: 1
   currentPlace: 0
   placement: {fileID: 756803077}
+  lapCountUI: 0
+  checkPointDistance: 0
+  counterUI: 0
+  isAI: 0
+  lessCheckpoints: 0
+  extraPointTime: 0
+  sprite_name_idfk_ask_mike: {fileID: 0}
 --- !u!65 &1336367382
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11206,9 +11340,19 @@ MonoBehaviour:
   checkPointCounter: 0
   lapCounter: 0
   stopAtWall: 0
-  rngSpeed: 1
+  rngSpeedAccel: 1
+  rngSpeedmax: 1
+  timeSinceLastCheck: 0
+  resetTime: 1
   currentPlace: 0
   placement: {fileID: 1397701218}
+  lapCountUI: 0
+  checkPointDistance: 0
+  counterUI: 0
+  isAI: 0
+  lessCheckpoints: 0
+  extraPointTime: 0
+  sprite_name_idfk_ask_mike: {fileID: 0}
 --- !u!65 &1477823708
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13815,9 +13959,19 @@ MonoBehaviour:
   checkPointCounter: 0
   lapCounter: 0
   stopAtWall: 0
-  rngSpeed: 1
+  rngSpeedAccel: 1
+  rngSpeedmax: 1
+  timeSinceLastCheck: 0
+  resetTime: 1
   currentPlace: 0
   placement: {fileID: 1943494419}
+  lapCountUI: 0
+  checkPointDistance: 0
+  counterUI: 0
+  isAI: 0
+  lessCheckpoints: 0
+  extraPointTime: 0
+  sprite_name_idfk_ask_mike: {fileID: 0}
 --- !u!65 &1884054469
 BoxCollider:
   m_ObjectHideFlags: 0

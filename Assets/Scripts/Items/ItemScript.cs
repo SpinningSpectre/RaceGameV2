@@ -23,10 +23,12 @@ public class ItemScript : MonoBehaviour
     public Transform downScaleExample;
     [Header("Other")]
     public GameObject sceneManager;
+    MoneyManager moneyManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        moneyManager = FindObjectOfType<MoneyManager>();
         defaultScale = transform.localScale;
         downScale = downScaleExample.localScale;
     }
@@ -44,6 +46,7 @@ public class ItemScript : MonoBehaviour
             {
                 //Test , basically
                 sceneManager.GetComponent<IconManager>().UnEquipUI(1);
+                EarnMoney();
                 randomUpgrade = 0;
                 banana = false;
             }
@@ -59,6 +62,7 @@ public class ItemScript : MonoBehaviour
                 i.GetComponent<CarController>().speed = 0;
                 Debug.Log("Killed " + i);
                 sceneManager.GetComponent<IconManager>().UnEquipUI(2);
+                EarnMoney();
                 randomUpgrade = 0;
                 banned = false;
             }
@@ -69,6 +73,7 @@ public class ItemScript : MonoBehaviour
                 gameObject.GetComponent<CarController>().maxSpeed = 12;
                 Invoke("Scaleup", 10f);
                 sceneManager.GetComponent<IconManager>().UnEquipUI(3);
+                EarnMoney();
                 randomUpgrade = 0;
                 scale = false;
             }
@@ -78,6 +83,7 @@ public class ItemScript : MonoBehaviour
                 Rigidbody rb = gameObject.GetComponent<Rigidbody>();
                 rb.velocity = new Vector3(rb.velocity.x, 5, rb.velocity.z);
                 sceneManager.GetComponent<IconManager>().UnEquipUI(4);
+                EarnMoney();
                 randomUpgrade = 0;
                 jump = false;
             }
@@ -133,7 +139,7 @@ public class ItemScript : MonoBehaviour
         if (randomUpgrade == 0)
         {
             randomUpgrade = Random.Range(1, 5);
-            //randomUpgrade = 3;
+            //randomUpgrade = 2;
             Debug.Log(randomUpgrade);
             if (randomUpgrade == 1)
             {
@@ -178,5 +184,9 @@ public class ItemScript : MonoBehaviour
     {
         transform.localScale = defaultScale;
         gameObject.GetComponent<CarController>().maxSpeed = 10 + gameObject.GetComponent<CarController>().rngSpeedmax; ;
+    }
+    void EarnMoney()
+    {
+        moneyManager.GainMoney(5);
     }
 }

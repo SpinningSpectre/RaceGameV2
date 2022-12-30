@@ -6,12 +6,12 @@ public class SaveData : MonoBehaviour
 {
     string moneyKey = "Money";
     string upgradeKey = "Upgrade";
-    public int money { get; set; }
+    public float money { get; set; }
     public string upgrade { get; set; }
     MoneyManager moneyManager;
     private void Awake()
     {
-        money = PlayerPrefs.GetInt(moneyKey);
+        money = PlayerPrefs.GetFloat(moneyKey);
         upgrade = PlayerPrefs.GetString(upgradeKey);
     }
     private void Start()
@@ -22,16 +22,16 @@ public class SaveData : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            PlayerPrefs.SetInt(moneyKey, 0);
+            SetMoney(0);
             PlayerPrefs.SetString(upgradeKey, "");
             Debug.Log("Reset Shit");
         }
     }
-    public void SetMoney(int money)
+    public void SetMoney(float money)
     {
         Debug.Log(money);
         moneyManager.money = money;
-        PlayerPrefs.SetInt(moneyKey, money);
+        PlayerPrefs.SetFloat(moneyKey, money);
     }
     public void SetUpgrade(string Upgrade)
     {

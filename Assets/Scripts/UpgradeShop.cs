@@ -1,23 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UpgradeShop : MonoBehaviour
 {
     public int upgradeCost;
     MoneyManager moneyManager;
     SaveData saveData;
+    ShopManager shopManager;
+    public bool hasThisUpgrade = false;
+    public RawImage selectedImage;
     // Start is called before the first frame update
     void Start()
     {
         moneyManager = FindObjectOfType<MoneyManager>();
         saveData = FindObjectOfType<SaveData>();
+        shopManager = FindObjectOfType<ShopManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public void Cost(int cost)
     {
@@ -25,15 +30,25 @@ public class UpgradeShop : MonoBehaviour
     }
     public void BuySomething(string upgrade)
     {
-        if (moneyManager.money < upgradeCost)
+        if (hasThisUpgrade == false)
         {
-            Debug.Log("HA , Poor!");
+            if (moneyManager.money < upgradeCost)
+            {
+                Debug.Log("HA , Poor!");
+            }
+            else
+            {
+                Debug.Log("Bought " + upgrade);
+                hasThisUpgrade = true;
+                UpgradeUI();
+                saveData.SetUpgrade(upgrade);
+                moneyManager.GainMoney(-upgradeCost);
+            }
         }
-        else
-        {
-            Debug.Log("Bought " + upgrade);
-            saveData.SetUpgrade(upgrade);
-            moneyManager.money -= upgradeCost;
-        }
+    }
+    public void UpgradeUI()
+    {
+        shopManager.UnEquipUI();
+        selectedImage.color = Color.white;
     }
 }

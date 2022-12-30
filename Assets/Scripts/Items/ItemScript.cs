@@ -24,6 +24,8 @@ public class ItemScript : MonoBehaviour
     [Header("Other")]
     public GameObject sceneManager;
     MoneyManager moneyManager;
+    float itemCooldown;
+    bool itemActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +38,8 @@ public class ItemScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isAI == false)
+        itemCooldown -= Time.deltaTime;
+        if (isAI == false && itemCooldown <= 0 && itemActive == false)
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -70,8 +73,10 @@ public class ItemScript : MonoBehaviour
             {
                 //Scale down , Speed up
                 transform.localScale = downScale;
-                gameObject.GetComponent<CarController>().maxSpeed = 12;
+                gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 2;
+                itemActive = true;
                 Invoke("Scaleup", 10f);
+                itemActive = false;
                 sceneManager.GetComponent<IconManager>().UnEquipUI(3);
                 EarnMoney();
                 randomUpgrade = 0;
@@ -88,12 +93,11 @@ public class ItemScript : MonoBehaviour
                 jump = false;
             }
         }
-        else
+        else if (isAI == true && itemActive == false)
         {
             aiTimeToUse -= Time.deltaTime;
             if (aiTimeToUse <= 0)
             {
-                Debug.Log("AI Attack");
                 if (banana == true)
                 {
                     //Test , basically
@@ -119,7 +123,9 @@ public class ItemScript : MonoBehaviour
                 {
                     //Scale down , Speed up
                     transform.localScale = downScale;
+                    itemActive = true;
                     Invoke("Scaleup", 10f);
+                    itemActive = false;
                     randomUpgrade = 0;
                     scale = false;
                 }
@@ -183,7 +189,7 @@ public class ItemScript : MonoBehaviour
     void Scaleup()
     {
         transform.localScale = defaultScale;
-        gameObject.GetComponent<CarController>().maxSpeed = 10 + gameObject.GetComponent<CarController>().rngSpeedmax; ;
+        gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed;
     }
     void EarnMoney()
     {

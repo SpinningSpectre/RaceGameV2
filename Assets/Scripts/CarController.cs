@@ -45,8 +45,8 @@ public class CarController : MonoBehaviour
     IconManager iconManager;
     EndingManager endingManager;
     public bool won = false;
+    public float startingMaxSpeed;
 
-    // Start is called before the first frame update
     void Start()
     {
         currentCheckpoint = checkPoints[0];
@@ -68,6 +68,7 @@ public class CarController : MonoBehaviour
         loader = FindObjectOfType<SceneLoader>();
         iconManager = FindObjectOfType<IconManager>();
         endingManager = FindObjectOfType<EndingManager>();
+        //upgrades
         if (isAI == false)
         {
             saveData = FindObjectOfType<SaveData>();
@@ -80,17 +81,45 @@ public class CarController : MonoBehaviour
                 if (activeUpgrade == "test")
                 {
                     Debug.Log("Has SPEEEEEEEEEEEEEEED");
-                    maxSpeed = maxSpeed + 50;
+                    maxSpeed = maxSpeed + 10;
                     accel = accel + 10;
+                }
+                else if (activeUpgrade == "Powerup")
+                {
+                    GetComponentInParent<ItemScript>().RandomUpgrade();
+                }
+                else if (activeUpgrade == "Speed")
+                {
+                    maxSpeed = maxSpeed/100*110;
+                }
+                else if (activeUpgrade == "Accel")
+                {
+                    accel = accel / 100 * 110;
+                }
+                else if (activeUpgrade == "Turn")
+                {
+                    turnSpeed = turnSpeed / 100 * 130;
+                } else if (activeUpgrade == "Stop")
+                {
+                    stoppingSpeed = stoppingSpeed / 100 * 150;
+                }
+                else if (activeUpgrade == "Balance")
+                {
+                    maxSpeed = maxSpeed / 100 * 125;
+                    accel = accel / 100 * 50;
+                }
+                else if (activeUpgrade == "Money")
+                {
+                    moneyManager.moneyMultiplier = 1.2f;
                 }
             }
             else
             {
                 Debug.Log("No up");
             }
+            startingMaxSpeed = maxSpeed;
         }
     }
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (checkPointCounter - 1 >= 0)
@@ -134,7 +163,7 @@ public class CarController : MonoBehaviour
             {
                 moneyManager.GainMoney(10);
             }
-            loader.LoadScene("SampleScene");
+            loader.LoadScene("Shop");
         }else if (isAI == true && endingManager.carsEnded != 5 && lapCounter == winCount && won == false)
         {
             won = true;
@@ -217,11 +246,11 @@ public class CarController : MonoBehaviour
         {
             Debug.Log("Oh hell nahh");
             checkPointCounter = 0;
+            lapCounter++;
             if (isAI == false)
             {
                 moneyManager.GainMoney(10);
             }
-            lapCounter++;
         }
     }
     private void OnTriggerExit(Collider other)

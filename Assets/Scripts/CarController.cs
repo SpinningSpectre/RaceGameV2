@@ -76,21 +76,13 @@ public class CarController : MonoBehaviour
             activeUpgrade = saveData.upgrade;
             if (activeUpgrade != "")
             {
-                Debug.Log("Has up");
-                Debug.Log(activeUpgrade);
-                if (activeUpgrade == "test")
-                {
-                    Debug.Log("Has SPEEEEEEEEEEEEEEED");
-                    maxSpeed = maxSpeed + 10;
-                    accel = accel + 10;
-                }
-                else if (activeUpgrade == "Powerup")
+                if (activeUpgrade == "Powerup")
                 {
                     GetComponentInParent<ItemScript>().RandomUpgrade();
                 }
                 else if (activeUpgrade == "Speed")
                 {
-                    maxSpeed = maxSpeed/100*110;
+                    maxSpeed = maxSpeed/100*105;
                 }
                 else if (activeUpgrade == "Accel")
                 {
@@ -106,11 +98,11 @@ public class CarController : MonoBehaviour
                 else if (activeUpgrade == "Balance")
                 {
                     maxSpeed = maxSpeed / 100 * 125;
-                    accel = accel / 100 * 50;
+                    accel = accel / 100 * 75;
                 }
                 else if (activeUpgrade == "Money")
                 {
-                    moneyManager.moneyMultiplier = 1.2f;
+                    moneyManager.moneyMultiplier = 1.5f;
                 }
             }
             else

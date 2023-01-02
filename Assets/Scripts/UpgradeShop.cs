@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,10 @@ public class UpgradeShop : MonoBehaviour
     SaveData saveData;
     ShopManager shopManager;
     public bool hasThisUpgrade = false;
+    public int buyingUpgrade;
     public RawImage selectedImage;
+    public GameObject costSign;
+    public Image checkMark;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,27 +32,64 @@ public class UpgradeShop : MonoBehaviour
     {
         upgradeCost = cost;
     }
+    public void UpgradeNumber(int upgrade)
+    {
+        buyingUpgrade = upgrade;
+    }
     public void BuySomething(string upgrade)
     {
         if (hasThisUpgrade == false)
         {
-            if (moneyManager.money < upgradeCost)
+            bool hasUpgrade = false;
+            hasUpgrade = saveData.CheckUpgrade(buyingUpgrade);
+            if (hasUpgrade == true)
             {
-                Debug.Log("HA , Poor!");
-            }
-            else
-            {
-                Debug.Log("Bought " + upgrade);
+                saveData.SetUpgrade(buyingUpgrade);
                 hasThisUpgrade = true;
                 UpgradeUI();
                 saveData.SetUpgrade(upgrade);
-                moneyManager.GainMoney(-upgradeCost);
+                if (hasUpgrade == false)
+                {
+                    moneyManager.GainMoney(-upgradeCost);
+                    OwnUpgrade();
+                }
             }
+            else if(moneyManager.money < upgradeCost)
+            {
+                Debug.Log("HA , Poor!");
+            } else
+            {
+                saveData.SetUpgrade(buyingUpgrade);
+                hasThisUpgrade = true;
+                UpgradeUI();
+                saveData.SetUpgrade(upgrade);
+                if (hasUpgrade == false)
+                {
+                    moneyManager.GainMoney(-upgradeCost);
+                    OwnUpgrade();
+                }
+            }
+        } else if (hasThisUpgrade == false)
+        {
+            hasThisUpgrade = true;
+            UpgradeUI();
+            saveData.SetUpgrade(upgrade);
         }
     }
     public void UpgradeUI()
     {
         shopManager.UnEquipUI();
         selectedImage.color = Color.white;
+    }
+    public void OwnUpgrade()
+    {
+        Image[] image;
+        image = costSign.GetComponentsInChildren<Image>();
+        for (int i = 0; i < image.Length; i++)
+        {
+            image[i].color = Color.clear;
+        }
+        costSign.GetComponentInChildren<Text>().text = "";
+        checkMark.color = Color.white;
     }
 }

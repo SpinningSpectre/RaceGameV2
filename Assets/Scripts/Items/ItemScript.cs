@@ -41,6 +41,7 @@ public class ItemScript : MonoBehaviour
         itemCooldown -= Time.deltaTime;
         if (isAI == false && itemCooldown <= 0 && itemActive == false)
         {
+
             if (Input.GetKeyDown(KeyCode.E))
             {
                 RandomUpgrade();
@@ -145,7 +146,7 @@ public class ItemScript : MonoBehaviour
         if (randomUpgrade == 0)
         {
             randomUpgrade = Random.Range(1, 5);
-            //randomUpgrade = 2;
+            //randomUpgrade = 4;
             Debug.Log(randomUpgrade);
             if (randomUpgrade == 1)
             {

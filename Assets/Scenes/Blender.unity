@@ -1642,6 +1642,7 @@ MonoBehaviour:
   sprite_name_idfk_ask_mike: {fileID: 21300000, guid: 8337c02422dc86643a8db94807353753,
     type: 3}
   won: 0
+  startingMaxSpeed: 0
 --- !u!65 &194314048
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2005,6 +2006,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   money: 0
   moneyText: {fileID: 1052569563}
+  moneyK: 0
+  moneyM: 0
+  moneyMultiplier: 1
 --- !u!114 &201679840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2017,6 +2021,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01e44a2f2966b544890a0aa576fe5d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasUpgrade: 00000000000000
+  hasAchievement: 0000
+  bool1: 0
 --- !u!114 &201679841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4266,10 +4273,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
-  turnSpeed: 50
+  turnSpeed: 60
   accel: 2.5
   speed: 0
-  stoppingSpeed: 5
+  stoppingSpeed: 2
   bounceSpeed: 2
   checkPoints:
   - {fileID: 125051091}
@@ -4293,7 +4300,7 @@ MonoBehaviour:
   currentCheckpoint: {fileID: 0}
   checkPointCounter: 0
   lapCounter: 0
-  winCount: 1
+  winCount: 3
   stopAtWall: 0
   rngSpeedAccel: 1
   rngSpeedmax: 1
@@ -4304,12 +4311,13 @@ MonoBehaviour:
   lapCountUI: 0
   checkPointDistance: 0
   counterUI: 0
-  isAI: 0
+  isAI: 1
   lessCheckpoints: 2
   extraPointTime: 5
   sprite_name_idfk_ask_mike: {fileID: 21300000, guid: a014d3c3f0659104180d9d8604163cfa,
     type: 3}
   won: 0
+  startingMaxSpeed: 0
 --- !u!65 &441057958
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12014,6 +12022,7 @@ MonoBehaviour:
   sprite_name_idfk_ask_mike: {fileID: 21300000, guid: 6236dd9668de6eb499dc734bec2f28f7,
     type: 3}
   won: 0
+  startingMaxSpeed: 0
 --- !u!65 &767294035
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12985,6 +12994,7 @@ MonoBehaviour:
   extraPointTime: 0
   sprite_name_idfk_ask_mike: {fileID: 0}
   won: 0
+  startingMaxSpeed: 0
 --- !u!65 &908964825
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13210,6 +13220,7 @@ MonoBehaviour:
   sprite_name_idfk_ask_mike: {fileID: 21300000, guid: 2168d393b19e9c0478ecfd0fa5756dc0,
     type: 3}
   won: 0
+  startingMaxSpeed: 0
 --- !u!65 &918264989
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16713,6 +16724,7 @@ MonoBehaviour:
   sprite_name_idfk_ask_mike: {fileID: 21300000, guid: 947523a96b3d73447aeceff3f206d1fb,
     type: 3}
   won: 0
+  startingMaxSpeed: 0
 --- !u!65 &1303679339
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16890,6 +16902,7 @@ MonoBehaviour:
   sprite_name_idfk_ask_mike: {fileID: 21300000, guid: ef57f466fbf21684d875cda8af444948,
     type: 3}
   won: 0
+  startingMaxSpeed: 0
 --- !u!65 &1333510216
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22748,6 +22761,7 @@ MonoBehaviour:
   sprite_name_idfk_ask_mike: {fileID: 21300000, guid: 2b56628f5b3a92b41bed51265cf1e22b,
     type: 3}
   won: 0
+  startingMaxSpeed: 0
 --- !u!65 &1989470501
 BoxCollider:
   m_ObjectHideFlags: 0

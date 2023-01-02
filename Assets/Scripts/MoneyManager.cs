@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,16 +25,16 @@ public class MoneyManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            GainMoney(0);
+            GainMoney(-1);
             Debug.Log("Reset Shit");
         }
         if (money < 1000 && money >= 0)
         {
-            moneyText.text = money.ToString();
+            moneyText.text = String.Format("{0:0}", money);
         } else if (money >= 1000 && money < 1000000)
         {
             moneyK = money / 1000;
-            moneyText.text = moneyK.ToString() + "K";
+            moneyText.text = String.Format("{0:0.0}", moneyK) + "K";
         } else if (money < 0)
         {
             moneyText.text = money.ToString() + " MSG Me!";

@@ -1,26 +1,32 @@
+using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SaveData : MonoBehaviour
 {
     string moneyKey = "Money";
     string upgradeKey = "Upgrade";
+    string carSkinKey = "CarSkin";
     public bool[] hasUpgrade = {false , false , false , false , false , false , false};
     public bool[] hasAchievement = { false, false };
     public float money { get; set; }
     public string upgrade { get; set; }
+    public string carSkin { get; set; }
     public bool bool1 = false;
     MoneyManager moneyManager;
     private void Awake()
     {
         money = PlayerPrefs.GetFloat(moneyKey);
         upgrade = PlayerPrefs.GetString(upgradeKey);
+        carSkin = PlayerPrefs.GetString(carSkinKey);
         bool1 = PlayerPrefs.GetInt("1Up") == 0;
     }
     private void Start()
     {
         moneyManager = FindObjectOfType<MoneyManager>();
+        //for (int i)
         if (PlayerPrefs.GetInt("1Up") == 1)
         {
             hasUpgrade[0] = true;
@@ -64,15 +70,16 @@ public class SaveData : MonoBehaviour
         {
             SetMoney(0);
             PlayerPrefs.SetString(upgradeKey, "");
-            PlayerPrefs.SetInt("8Up", false ? 1 : 0);
-            PlayerPrefs.SetInt("7Up", false ? 1 : 0);
-            PlayerPrefs.SetInt("6Up", false ? 1 : 0);
-            PlayerPrefs.SetInt("5Up", false ? 1 : 0);
-            PlayerPrefs.SetInt("4Up", false ? 1 : 0);
-            PlayerPrefs.SetInt("3Up", false ? 1 : 0);
-            PlayerPrefs.SetInt("2Up", false ? 1 : 0);
-            PlayerPrefs.SetInt("1Up", false ? 1 : 0);
-            PlayerPrefs.SetInt("AchUP", false ? 1 : 0);
+            for (int i = 0; i < hasUpgrade.Length + 1; i++)
+            {
+                PlayerPrefs.SetInt(i + "Up", false ? 1 : 0);
+            }
+            for (int i = 0; i < hasAchievement.Length + 1; i++)
+            {
+                PlayerPrefs.SetInt(i + "Ach", false ? 1 : 0);
+            }
+            PlayerPrefs.SetInt("1Ach", false ? 1 : 0);
+            PlayerPrefs.SetString(carSkinKey, "");
             for (int x = 0; x < hasUpgrade.Length; x++)
             {
                 hasUpgrade[x] = false;
@@ -125,15 +132,32 @@ public class SaveData : MonoBehaviour
             PlayerPrefs.SetInt(upgrade + "Up", true ? 1 : 0);
         }
     }
+    public void AchieveSomething(int achievement)
+    {
+        PlayerPrefs.SetInt(achievement + "Ach", true ? 1 : 0);
+    }
+    public bool CheckAchievement(int achievement)
+    {
+        bool hasAchievement = false;
+        if (PlayerPrefs.GetInt(achievement + "Ach") == 1)
+        {
+            hasAchievement = true;
+        }
+        else if (PlayerPrefs.GetInt(achievement + "Ach") == 0)
+        {
+            hasAchievement = false;
+        }
+        return hasAchievement;
+    }
     public void CheckUpgradeAchievement()
     {
         if (hasUpgrade[0] == true && hasUpgrade[1] == true && hasUpgrade[2] == true && hasUpgrade[3] == true && hasUpgrade[4] == true && hasUpgrade[5] == true && hasUpgrade[6] == true)
         {
-            PlayerPrefs.SetInt("AchUP", true ? 1 : 0);
-            if (PlayerPrefs.GetInt("AchUP") == 1)
-            {
-                Debug.Log("Has all upgrades , Achievement time");
-            }
+            AchieveSomething(1);
         }
+    }
+    public void SetCarSkin(string skin)
+    {
+        PlayerPrefs.SetString(carSkinKey, skin);
     }
 }

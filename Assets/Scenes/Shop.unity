@@ -2841,7 +2841,7 @@ RectTransform:
   m_GameObject: {fileID: 506949276}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.20499122, y: 0.08854481, z: 0.09213089}
+  m_LocalScale: {x: 0.21204558, y: 0.16335073, z: 0.16335073}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 844583046}
@@ -2872,7 +2872,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 2ba42a9a79777c64c9480f93c2c377c4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7908,7 +7908,7 @@ MonoBehaviour:
   moneyText: {fileID: 2137409477}
   moneyK: 0
   moneyM: 0
-  moneyMultiplier: 10
+  moneyMultiplier: 1
 --- !u!114 &1544001793
 MonoBehaviour:
   m_ObjectHideFlags: 0

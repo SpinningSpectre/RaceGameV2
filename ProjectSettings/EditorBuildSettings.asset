@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Blender.unity
     guid: a13821dd85b0e9c42831c4d46ea00fb8
+  - enabled: 1
+    path: Assets/Scenes/Achievements.unity
+    guid: f082ad857505ffb449c6c9ff85a48942
+  - enabled: 1
+    path: Assets/Scenes/Skins.unity
+    guid: c1b3420f84288fa409ec8a5ce9371075
   m_configObjects: {}

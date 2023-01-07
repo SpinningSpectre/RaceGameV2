@@ -124,6 +124,7 @@ public class ItemScript : MonoBehaviour
                 {
                     //Scale down , Speed up
                     transform.localScale = downScale;
+                    gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 2;
                     itemActive = true;
                     Invoke("Scaleup", 10f);
                     itemActive = false;

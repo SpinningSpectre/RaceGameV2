@@ -51,7 +51,10 @@ public class UpgradeShop : MonoBehaviour
                 if (hasUpgrade == false)
                 {
                     moneyManager.GainMoney(-upgradeCost);
-                    OwnUpgrade();
+                    if (upgrade != "")
+                    {
+                        OwnUpgrade();
+                    }
                 }
             }
             else if(moneyManager.money < upgradeCost)
@@ -66,7 +69,10 @@ public class UpgradeShop : MonoBehaviour
                 if (hasUpgrade == false)
                 {
                     moneyManager.GainMoney(-upgradeCost);
-                    OwnUpgrade();
+                    if (upgrade != "")
+                    {
+                        OwnUpgrade();
+                    }
                 }
             }
         } else if (hasThisUpgrade == false)

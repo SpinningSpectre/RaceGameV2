@@ -39,8 +39,9 @@ public class CarController : MonoBehaviour
     public int extraPointTime;
     public Sprite sprite_name_idfk_ask_mike;
     MoneyManager moneyManager;
-    SaveData saveData;
-    string activeUpgrade;
+    public SaveData saveData;
+    public string activeUpgrade;
+    public string[] upgrades = { "Powerup", "Speed" , "Accel" , "Stop" , "Balance"};
     SceneLoader loader;
     IconManager iconManager;
     EndingManager endingManager;
@@ -50,15 +51,15 @@ public class CarController : MonoBehaviour
     void Start()
     {
         currentCheckpoint = checkPoints[0];
-        rngSpeedAccel = Random.Range(-1,1);
+        rngSpeedAccel = Random.Range(-0.25f,0.25f);
         accel = accel + rngSpeedAccel;
         if (rngSpeedAccel > 0)
         {
-            rngSpeedmax = Random.Range(-0.5f, 0);
+            rngSpeedmax = Random.Range(-0.1f, 0);
         }
         else if (rngSpeedAccel < 0)
         {
-            rngSpeedmax = Random.Range(0, 0.5f);
+            rngSpeedmax = Random.Range(0, 0.1f);
         }
         else
         {
@@ -69,48 +70,75 @@ public class CarController : MonoBehaviour
         iconManager = FindObjectOfType<IconManager>();
         endingManager = FindObjectOfType<EndingManager>();
         //upgrades
-        if (isAI == false)
+        saveData = FindObjectOfType<SaveData>();
+        activeUpgrade = saveData.upgrade;
+        if (activeUpgrade != "")
         {
-            saveData = FindObjectOfType<SaveData>();
-            moneyManager = FindObjectOfType<MoneyManager>();
-            activeUpgrade = saveData.upgrade;
-            if (activeUpgrade != "")
+            if (isAI == true)
             {
-                if (activeUpgrade == "Powerup")
+                int i = Random.Range(0, upgrades.Length);
+                Debug.Log(i);
+                activeUpgrade = upgrades[i];
+                switch (activeUpgrade)
                 {
-                    GetComponentInParent<ItemScript>().RandomUpgrade();
+                    case "Powerup":
+                        GetComponentInParent<ItemScript>().RandomUpgrade();
+                        break;
+                    case "Speed":
+                        maxSpeed = maxSpeed / 100 * 105;
+                        break;
+                    case "Accel":
+                        accel = accel / 100 * 110;
+                        break;
+                    case "Turn":
+                        turnSpeed = turnSpeed / 100 * 130;
+                        break;
+                    case "Stop":
+                        stoppingSpeed = stoppingSpeed / 100 * 150;
+                        break;
+                    case "Balance":
+                        maxSpeed = maxSpeed / 100 * 125;
+                        accel = accel / 100 * 75;
+                        break;
+                    case "Money":
+                        moneyManager.moneyMultiplier = 1.5f;
+                        break;
                 }
-                else if (activeUpgrade == "Speed")
+            } else if (isAI == false)
+            {
+                moneyManager = FindObjectOfType<MoneyManager>();
+                switch (activeUpgrade)
                 {
-                    maxSpeed = maxSpeed/100*105;
-                }
-                else if (activeUpgrade == "Accel")
-                {
-                    accel = accel / 100 * 110;
-                }
-                else if (activeUpgrade == "Turn")
-                {
-                    turnSpeed = turnSpeed / 100 * 130;
-                } else if (activeUpgrade == "Stop")
-                {
-                    stoppingSpeed = stoppingSpeed / 100 * 150;
-                }
-                else if (activeUpgrade == "Balance")
-                {
-                    maxSpeed = maxSpeed / 100 * 125;
-                    accel = accel / 100 * 75;
-                }
-                else if (activeUpgrade == "Money")
-                {
-                    moneyManager.moneyMultiplier = 1.5f;
+                    case "Powerup":
+                        GetComponentInParent<ItemScript>().RandomUpgrade();
+                        break;
+                    case "Speed":
+                        maxSpeed = maxSpeed / 100 * 105;
+                        break;
+                    case "Accel":
+                        accel = accel / 100 * 110;
+                        break;
+                    case "Turn":
+                        turnSpeed = turnSpeed / 100 * 130;
+                        break;
+                    case "Stop":
+                        stoppingSpeed = stoppingSpeed / 100 * 150;
+                        break;
+                    case "Balance":
+                        maxSpeed = maxSpeed / 100 * 125;
+                        accel = accel / 100 * 75;
+                        break;
+                    case "Money":
+                        moneyManager.moneyMultiplier = 1.5f;
+                        break;
                 }
             }
             else
             {
                 Debug.Log("No up");
             }
-            startingMaxSpeed = maxSpeed;
         }
+        startingMaxSpeed = maxSpeed;
     }
     void FixedUpdate()
     {

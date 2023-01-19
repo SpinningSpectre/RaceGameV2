@@ -23,6 +23,15 @@ public class SkinsUI : MonoBehaviour
         {
             skins[0].color = Color.green;
         }
+        hasAchievement = saveData.CheckAchievement(2);
+        if (hasAchievement == false)
+        {
+            skins[1].color = Color.red;
+        }
+        else
+        {
+            skins[1].color = Color.green;
+        }
     }
 
     // Update is called once per frame

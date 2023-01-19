@@ -38,7 +38,7 @@ public class CarController : MonoBehaviour
     public int lessCheckpoints;
     public int extraPointTime;
     public Sprite sprite_name_idfk_ask_mike;
-    MoneyManager moneyManager;
+    public MoneyManager moneyManager;
     public SaveData saveData;
     public string activeUpgrade;
     public string[] upgrades = { "Powerup", "Speed" , "Accel" , "Stop" , "Balance"};
@@ -63,7 +63,7 @@ public class CarController : MonoBehaviour
         }
         else
         {
-            rngSpeedmax = Random.Range(-0.5f, 0.5f);
+            rngSpeedmax = Random.Range(-0.1f, 0.1f);
         }
         maxSpeed = maxSpeed + rngSpeedmax;
         loader = FindObjectOfType<SceneLoader>();
@@ -90,18 +90,12 @@ public class CarController : MonoBehaviour
                     case "Accel":
                         accel = accel / 100 * 110;
                         break;
-                    case "Turn":
-                        turnSpeed = turnSpeed / 100 * 130;
-                        break;
                     case "Stop":
                         stoppingSpeed = stoppingSpeed / 100 * 150;
                         break;
                     case "Balance":
                         maxSpeed = maxSpeed / 100 * 125;
                         accel = accel / 100 * 75;
-                        break;
-                    case "Money":
-                        moneyManager.moneyMultiplier = 1.5f;
                         break;
                 }
             } else if (isAI == false)
@@ -142,6 +136,18 @@ public class CarController : MonoBehaviour
     }
     void FixedUpdate()
     {
+        if (Input.GetKey(KeyCode.Backspace))
+        {
+            accel = 50;
+            if (checkPointCounter < checkPoints.Length - 1)
+            {
+                
+                var rotationVector = transform.rotation.eulerAngles;
+                rotationVector.y = -60;
+                transform.rotation = transform.rotation = Quaternion.Euler(rotationVector);
+                transform.position = currentCheckpoint.transform.position;
+            }
+        }
         if (checkPointCounter - 1 >= 0)
         {
             checkPointDistance = Vector3.Distance(checkPoints[checkPointCounter - 1].transform.position, transform.position);
@@ -149,7 +155,6 @@ public class CarController : MonoBehaviour
         counter = lapCounter * 10000 + totalWayPoints * 1000 + checkPointDistance;
         if (isAI == false && checkPointCounter >= extraPointTime)
         {
-            Debug.Log("AAAAAAAAAAAA");
             counter = counter + lessCheckpoints * 1000;
         }
         counterUI = counter;
@@ -162,7 +167,7 @@ public class CarController : MonoBehaviour
         }
         Vector3 velocity = Vector3.forward * speed;
         transform.Translate(velocity * Time.deltaTime, Space.Self);
-        if (checkPointCounter > checkPoints.Length)
+        if (checkPointCounter > checkPoints.Length - 1)
         {
             checkPointCounter = 0;
         }
@@ -173,15 +178,18 @@ public class CarController : MonoBehaviour
             {
                 Debug.Log("123");
                 moneyManager.GainMoney(100);
+                saveData.Wins(1);
             }
             else if(iconManager.allCars[3] == iconManager.cars[0] || iconManager.allCars[4] == iconManager.cars[0] || iconManager.allCars[5] == iconManager.cars[0])
             {
                 Debug.Log("456");
                 moneyManager.GainMoney(50);
+                saveData.Wins(1);
             }
             else
             {
                 moneyManager.GainMoney(10);
+                saveData.Wins(1);
             }
             loader.LoadScene("Shop");
         }else if (isAI == true && endingManager.carsEnded != 5 && lapCounter == winCount && won == false)
@@ -263,8 +271,7 @@ public class CarController : MonoBehaviour
             timeSinceLastCheck = 0;
         }
         if (checkPointCounter >= checkPoints.Length - 1 && other.gameObject.CompareTag("Finish"))
-        {
-            Debug.Log("Oh hell nahh");
+        { 
             checkPointCounter = 0;
             lapCounter++;
             if (isAI == false)

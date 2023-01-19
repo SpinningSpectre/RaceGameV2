@@ -17,7 +17,7 @@ public class SkinManager : MonoBehaviour
     public string currentCarSkin;
     public Mesh boxCar;
     public Material[] boxCarMats;
-    public GameObject boxCarMats2;
+    public GameObject forklift;
     [Header("Player Pictures")]
     public string currentPFP;
     public Image blenderMan;
@@ -37,9 +37,12 @@ public class SkinManager : MonoBehaviour
             switch (currentCarSkin)
             {
                 case "box":
-                    Debug.Log("Yo");
                     playerCarVisual.GetComponent<MeshFilter>().mesh = boxCar;
                     playerCarVisual.GetComponent<MeshRenderer>().materials = boxCarMats;
+                    break;
+                case "forklift":
+                    playerCarVisual.GetComponent<MeshRenderer>().enabled = false;
+                    forklift.GetComponent<MeshRenderer>().enabled = true;
                     break;
             }
         }
@@ -64,6 +67,15 @@ public class SkinManager : MonoBehaviour
             if (hasAchievement == true)
             {
                     saveData.SetCarSkin(skin);
+            }
+        }
+        if (skin == "forklift")
+        {
+            bool hasAchievement = false;
+            hasAchievement = saveData.CheckAchievement(2);
+            if (hasAchievement == true)
+            {
+                saveData.SetCarSkin(skin);
             }
         }
     }

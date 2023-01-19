@@ -69,6 +69,7 @@ public class MoneyManager : MonoBehaviour
             if (amount > 0)
             {
                 amount = amount * moneyMultiplier;
+                saveData.SetTotalMoney(amount);
             }
             money = money + amount;
             saveData.SetMoney(money);

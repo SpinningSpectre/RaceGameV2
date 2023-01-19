@@ -10,12 +10,14 @@ public class ItemScript : MonoBehaviour
     public bool banned = false;
     public bool scale = false;
     public bool jump = false;
+    public bool reference = false;
     [Header("AI")]
     public bool isAI = true;
     public float aiTimeToUse = 10;
     public float aiTTUMin = 4;
     public float aiTTUMax = 10;
     public GameObject[] AI;
+    public GameObject[] AIReference;
     [Header("Scale")]
     //public int[] normalScale = { 0 , 0 , 0}; Unsure if used.
     public Vector3 defaultScale;
@@ -93,6 +95,18 @@ public class ItemScript : MonoBehaviour
                 randomUpgrade = 0;
                 jump = false;
             }
+            if (reference == true && Input.GetKeyDown(KeyCode.Q))
+            {
+                //Teleports you behind a random enemy car
+                int i = Random.Range(0, AI.Length);
+                transform.position = AIReference[i].transform.position;
+                transform.rotation = AIReference[i].transform.rotation;
+                gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed / 3;
+                sceneManager.GetComponent<IconManager>().UnEquipUI(4);
+                EarnMoney();
+                randomUpgrade = 0;
+                reference = false;
+            }
         }
         else if (isAI == true && itemActive == false)
         {
@@ -146,42 +160,48 @@ public class ItemScript : MonoBehaviour
     {
         if (randomUpgrade == 0)
         {
-            randomUpgrade = Random.Range(1, 5);
-            //randomUpgrade = 4;
+            randomUpgrade = Random.Range(1, 6);
+            randomUpgrade = 5;
             Debug.Log(randomUpgrade);
-            if (randomUpgrade == 1)
+            switch (randomUpgrade)
             {
-                banana = true;
-                if (isAI == false)
-                {
-                    sceneManager.GetComponent<IconManager>().EquipPowerup(1);
-                }
+                case 1:
+                    banana = true;
+                    if (isAI == false)
+                    {
+                        sceneManager.GetComponent<IconManager>().EquipPowerup(1);
+                    }
+                    break;
+                case 2:
+                    banned = true;
+                    if (isAI == false)
+                    {
+                        sceneManager.GetComponent<IconManager>().EquipPowerup(2);
+                    }
+                    break;
+                case 3:
+                    scale = true;
+                    if (isAI == false)
+                    {
+                        sceneManager.GetComponent<IconManager>().EquipPowerup(3);
+                    }
+                    break;
+                case 4:
+                    jump = true;
+                    if (isAI == false)
+                    {
+                        sceneManager.GetComponent<IconManager>().EquipPowerup(4);
+                    }
+                    break;
+                case 5:
+                    reference = true;
+                    if (isAI == false)
+                    {
+                        sceneManager.GetComponent<IconManager>().EquipPowerup(5);
+                    }
+                    break;
             }
-            else if (randomUpgrade == 2)
-            {
-                banned = true;
-                if (isAI == false)
-                {
-                    sceneManager.GetComponent<IconManager>().EquipPowerup(2);
-                }
-            }
-            else if (randomUpgrade == 3)
-            {
-                scale = true;
-                if (isAI == false)
-                {
-                    sceneManager.GetComponent<IconManager>().EquipPowerup(3);
-                }
-            }
-            else if (randomUpgrade == 4)
-            {
-                jump = true;
-                if (isAI == false)
-                {
-                    sceneManager.GetComponent<IconManager>().EquipPowerup(4);
-                }
-            }
-            if (isAI == true)
+            if (isAI == true) 
             {
             aiTimeToUse = Random.Range(aiTTUMin, aiTTUMax);
             Debug.Log("AI Powerup");

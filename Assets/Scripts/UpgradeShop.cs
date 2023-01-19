@@ -24,10 +24,6 @@ public class UpgradeShop : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-
-    }
     public void Cost(int cost)
     {
         upgradeCost = cost;

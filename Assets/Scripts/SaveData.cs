@@ -12,6 +12,8 @@ public class SaveData : MonoBehaviour
     public bool[] hasUpgrade = {false , false , false , false , false , false , false};
     public bool[] hasAchievement = { false, false };
     public float money { get; set; }
+    public float totalMoney { get; set; }
+    public int wins { get; set; }
     public string upgrade { get; set; }
     public string carSkin { get; set; }
     public bool bool1 = false;
@@ -19,6 +21,8 @@ public class SaveData : MonoBehaviour
     private void Awake()
     {
         money = PlayerPrefs.GetFloat(moneyKey);
+        totalMoney = PlayerPrefs.GetFloat("TotalMoney");
+        wins = PlayerPrefs.GetInt("Wins");
         upgrade = PlayerPrefs.GetString(upgradeKey);
         carSkin = PlayerPrefs.GetString(carSkinKey);
         bool1 = PlayerPrefs.GetInt("1Up") == 0;
@@ -79,6 +83,8 @@ public class SaveData : MonoBehaviour
                 PlayerPrefs.SetInt(i + "Ach", false ? 1 : 0);
             }
             PlayerPrefs.SetInt("1Ach", false ? 1 : 0);
+            PlayerPrefs.SetInt("Wins", 0);
+            PlayerPrefs.SetFloat("TotalMoney", 0);
             PlayerPrefs.SetString(carSkinKey, "");
             for (int x = 0; x < hasUpgrade.Length; x++)
             {
@@ -104,6 +110,16 @@ public class SaveData : MonoBehaviour
     {
         moneyManager.money = money;
         PlayerPrefs.SetFloat(moneyKey, money);
+    }
+    public void SetTotalMoney(float money)
+    {
+        totalMoney = PlayerPrefs.GetFloat("TotalMoney");
+        PlayerPrefs.SetFloat("TotalMoney", totalMoney + money);
+        if (PlayerPrefs.GetFloat("TotalMoney") == 3000)
+        {
+            AchieveSomething(3);
+        }
+        Debug.Log(PlayerPrefs.GetFloat("TotalMoney") + " Money Total");
     }
     public void SetUpgrade(string Upgrade)
     {
@@ -134,6 +150,7 @@ public class SaveData : MonoBehaviour
     }
     public void AchieveSomething(int achievement)
     {
+        Debug.Log("Has " + achievement);
         PlayerPrefs.SetInt(achievement + "Ach", true ? 1 : 0);
     }
     public bool CheckAchievement(int achievement)
@@ -159,5 +176,14 @@ public class SaveData : MonoBehaviour
     public void SetCarSkin(string skin)
     {
         PlayerPrefs.SetString(carSkinKey, skin);
+    }
+    public void Wins(int amount)
+    {
+        PlayerPrefs.SetInt("Wins", PlayerPrefs.GetInt("Wins") + amount);
+        if (PlayerPrefs.GetInt("Wins") == 25)
+        {
+            AchieveSomething(2);
+        }
+        Debug.Log(PlayerPrefs.GetInt("Wins") + "Wins");
     }
 }

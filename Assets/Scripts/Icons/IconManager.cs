@@ -73,7 +73,6 @@ public class IconManager : MonoBehaviour
     }
     public void UnEquipUI(int uiType)
     {
-        //0 is the all guns unequipped
         if (uiType == 0)
         {
             powerUp1.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;

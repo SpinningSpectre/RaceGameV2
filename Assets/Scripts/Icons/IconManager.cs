@@ -26,6 +26,8 @@ public class IconManager : MonoBehaviour
     public Image powerUp1;
     public Image powerUp2;
     public Image powerUp3;
+    public Image powerUp4;
+    public Image powerUp5;
     [Header("Bools")]
     bool itemSlot1Taken = false;
     private void Start()
@@ -70,6 +72,16 @@ public class IconManager : MonoBehaviour
             powerUp3.GetComponent<RectTransform>().anchoredPosition = powerupLocation.anchoredPosition;
             itemSlot1Taken = true;
         }
+        else if (itemSlot1Taken == false && powerUpNumber == 4)
+        {
+            powerUp4.GetComponent<RectTransform>().anchoredPosition = powerupLocation.anchoredPosition;
+            itemSlot1Taken = true;
+        }
+        else if (itemSlot1Taken == false && powerUpNumber == 5)
+        {
+            powerUp5.GetComponent<RectTransform>().anchoredPosition = powerupLocation.anchoredPosition;
+            itemSlot1Taken = true;
+        }
     }
     public void UnEquipUI(int uiType)
     {
@@ -78,6 +90,8 @@ public class IconManager : MonoBehaviour
             powerUp1.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
             powerUp2.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
             powerUp3.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
+            powerUp4.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
+            powerUp5.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
         }
         if (uiType == 1)
         {
@@ -93,6 +107,16 @@ public class IconManager : MonoBehaviour
         if (uiType == 3)
         {
             powerUp3.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
+            itemSlot1Taken = false;
+        }
+        if (uiType == 4)
+        {
+            powerUp4.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
+            itemSlot1Taken = false;
+        }
+        if (uiType == 5)
+        {
+            powerUp5.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
             itemSlot1Taken = false;
         }
     }

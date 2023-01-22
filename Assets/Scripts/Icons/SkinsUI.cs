@@ -8,7 +8,9 @@ public class SkinsUI : MonoBehaviour
     [Header("Basics")]
     SaveData saveData;
     [Header("Images")]
+    public Sprite unlock;
     public Image[] skins;
+    public Image[] locks;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,20 +19,20 @@ public class SkinsUI : MonoBehaviour
         hasAchievement = saveData.CheckAchievement(1);
         if (hasAchievement == false)
         {
-            skins[0].color = Color.red;
+            skins[0].color = Color.gray;
         }
         else
         {
-            skins[0].color = Color.green;
+            locks[0].sprite = unlock;
         }
         hasAchievement = saveData.CheckAchievement(2);
         if (hasAchievement == false)
         {
-            skins[1].color = Color.red;
+            skins[1].color = Color.gray;
         }
         else
         {
-            skins[1].color = Color.green;
+            locks[1].sprite = unlock;
         }
     }
 

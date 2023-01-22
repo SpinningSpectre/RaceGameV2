@@ -115,7 +115,7 @@ public class SaveData : MonoBehaviour
     {
         totalMoney = PlayerPrefs.GetFloat("TotalMoney");
         PlayerPrefs.SetFloat("TotalMoney", totalMoney + money);
-        if (PlayerPrefs.GetFloat("TotalMoney") == 3000)
+        if (PlayerPrefs.GetFloat("TotalMoney") >= 3000)
         {
             AchieveSomething(3);
         }

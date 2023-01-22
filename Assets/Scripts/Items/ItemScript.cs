@@ -23,6 +23,9 @@ public class ItemScript : MonoBehaviour
     public Vector3 defaultScale;
     public Vector3 downScale;
     public Transform downScaleExample;
+    [Header("Reference")]
+    public int aiHasMoreCheckpoints;
+    public int aicheckpointsMoreAt;
     [Header("Other")]
     public GameObject sceneManager;
     MoneyManager moneyManager;
@@ -43,7 +46,6 @@ public class ItemScript : MonoBehaviour
         itemCooldown -= Time.deltaTime;
         if (isAI == false && itemCooldown <= 0 && itemActive == false)
         {
-
             if (Input.GetKeyDown(KeyCode.E))
             {
                 RandomUpgrade();
@@ -51,6 +53,7 @@ public class ItemScript : MonoBehaviour
             if (banana == true && Input.GetKeyDown(KeyCode.Q))
             {
                 //Test , basically
+                itemCooldown = 1;
                 sceneManager.GetComponent<IconManager>().UnEquipUI(1);
                 EarnMoney();
                 randomUpgrade = 0;
@@ -58,6 +61,7 @@ public class ItemScript : MonoBehaviour
             }
             if (banned == true && Input.GetKeyDown(KeyCode.Q))
             {
+                itemCooldown = 1;
                 //sets 2 random cars to 0 speed
                 int r = Random.Range(0, AI.Length);
                 GameObject i = AI[r];
@@ -74,6 +78,7 @@ public class ItemScript : MonoBehaviour
             }
             if (scale == true && Input.GetKeyDown(KeyCode.Q))
             {
+                itemCooldown = 11;
                 //Scale down , Speed up
                 transform.localScale = downScale;
                 gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 2;
@@ -87,6 +92,7 @@ public class ItemScript : MonoBehaviour
             }
             if (jump == true && Input.GetKeyDown(KeyCode.Q))
             {
+                itemCooldown = 1;
                 //Its a jump.
                 Rigidbody rb = gameObject.GetComponent<Rigidbody>();
                 rb.velocity = new Vector3(rb.velocity.x, 5, rb.velocity.z);
@@ -97,12 +103,25 @@ public class ItemScript : MonoBehaviour
             }
             if (reference == true && Input.GetKeyDown(KeyCode.Q))
             {
+                itemCooldown = 1;
                 //Teleports you behind a random enemy car
                 int i = Random.Range(0, AI.Length);
                 transform.position = AIReference[i].transform.position;
                 transform.rotation = AIReference[i].transform.rotation;
+                if (AI[i].GetComponent<CarController>().checkPointCounter <= aicheckpointsMoreAt)
+                {
+                    gameObject.GetComponent<CarController>().checkPointCounter = AI[i].GetComponent<CarController>().checkPointCounter;
+                }
+                else if (AI[i].GetComponent<CarController>().checkPointCounter > aicheckpointsMoreAt)
+                {
+                    gameObject.GetComponent<CarController>().checkPointCounter = AI[i].GetComponent<CarController>().checkPointCounter - aiHasMoreCheckpoints;
+                }
+                if (gameObject.GetComponent<CarController>().lapCounter < AI[i].GetComponent<CarController>().lapCounter)
+                {
+                    gameObject.GetComponent<CarController>().lapCounter++;
+                }
                 gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed / 3;
-                sceneManager.GetComponent<IconManager>().UnEquipUI(4);
+                sceneManager.GetComponent<IconManager>().UnEquipUI(5);
                 EarnMoney();
                 randomUpgrade = 0;
                 reference = false;
@@ -161,7 +180,7 @@ public class ItemScript : MonoBehaviour
         if (randomUpgrade == 0)
         {
             randomUpgrade = Random.Range(1, 6);
-            randomUpgrade = 5;
+            //randomUpgrade = 5;
             Debug.Log(randomUpgrade);
             switch (randomUpgrade)
             {

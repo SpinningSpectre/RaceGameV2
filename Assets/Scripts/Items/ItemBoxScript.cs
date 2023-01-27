@@ -13,10 +13,8 @@ public class ItemBoxScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("HEEEEEEEEEEEEEEeEEEEEEEEY");
         if (collision.GetComponent<ItemScript>() && collision.GetComponent<ItemScript>().randomUpgrade == 0)
         {
-            Debug.Log("Car spotted");
             currentCar = collision.GetComponent<ItemScript>();
             currentCar.RandomUpgrade();
             transform.position = Death.position;

@@ -11,6 +11,7 @@ public class SkinsUI : MonoBehaviour
     public Sprite unlock;
     public Image[] skins;
     public Image[] locks;
+    public Text oldText;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +34,12 @@ public class SkinsUI : MonoBehaviour
         else
         {
             locks[1].sprite = unlock;
+        }
+        hasAchievement = saveData.hasOld();
+        if (hasAchievement == false)
+        {
+            skins[2].color = Color.clear;
+            oldText.text = "";
         }
     }
 

@@ -28,6 +28,7 @@ public class IconManager : MonoBehaviour
     public Image powerUp3;
     public Image powerUp4;
     public Image powerUp5;
+    public Image powerUp6;
     [Header("Bools")]
     bool itemSlot1Taken = false;
     private void Start()
@@ -51,7 +52,7 @@ public class IconManager : MonoBehaviour
         allCars = allCars.ToList().OrderByDescending(x => x.GetComponent<CarController>().counterUI).ToList();
         for (int i = 0; i < allCars.Count; i++)
         {
-            rankingText[i].text = " " + rankingNumber[i] + ". " + allCars[i].name;
+            rankingText[i].text = " " + rankingNumber[i] + ". " + allCars[i].GetComponent<CarController>().playerName;
             carImages[i].sprite = allCars[i].GetComponent<CarController>().sprite_name_idfk_ask_mike;
         }
     }
@@ -60,7 +61,6 @@ public class IconManager : MonoBehaviour
         if (itemSlot1Taken == false && powerUpNumber == 1)
         {
             powerUp1.GetComponent<RectTransform>().anchoredPosition = powerupLocation.anchoredPosition;
-            Debug.Log("Banana UI?");
         }
         else if (itemSlot1Taken == false && powerUpNumber == 2)
         {
@@ -82,6 +82,11 @@ public class IconManager : MonoBehaviour
             powerUp5.GetComponent<RectTransform>().anchoredPosition = powerupLocation.anchoredPosition;
             itemSlot1Taken = true;
         }
+        else if (itemSlot1Taken == false && powerUpNumber == 6)
+        {
+            powerUp6.GetComponent<RectTransform>().anchoredPosition = powerupLocation.anchoredPosition;
+            itemSlot1Taken = true;
+        }
     }
     public void UnEquipUI(int uiType)
     {
@@ -92,10 +97,10 @@ public class IconManager : MonoBehaviour
             powerUp3.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
             powerUp4.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
             powerUp5.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
+            powerUp6.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
         }
         if (uiType == 1)
         {
-            Debug.Log("Banana?");
             powerUp1.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
             itemSlot1Taken = false;
         }
@@ -117,6 +122,11 @@ public class IconManager : MonoBehaviour
         if (uiType == 5)
         {
             powerUp5.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
+            itemSlot1Taken = false;
+        }
+        if (uiType == 6)
+        {
+            powerUp6.GetComponent<RectTransform>().anchoredPosition = noItems.anchoredPosition;
             itemSlot1Taken = false;
         }
     }

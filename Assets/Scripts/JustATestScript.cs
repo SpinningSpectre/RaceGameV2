@@ -5,22 +5,27 @@ using UnityEngine;
 public class JustATestScript : MonoBehaviour
 {
     SceneLoader loader;
+    SaveData saveData;
     // Start is called before the first frame update
     void Start()
     {
         loader = FindObjectOfType<SceneLoader>();
+        saveData = FindObjectOfType<SaveData>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+        if (saveData.GetBool("DevMode") == true)
         {
-            loader.LoadScene("Shop");
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            loader.LoadScene("Blender");
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                loader.LoadScene("StartScreen");
+            }
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                loader.LoadScene("Blender");
+            }
         }
     }
 }

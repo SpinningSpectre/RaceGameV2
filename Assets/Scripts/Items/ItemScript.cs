@@ -11,6 +11,7 @@ public class ItemScript : MonoBehaviour
     public bool scale = false;
     public bool jump = false;
     public bool reference = false;
+    public bool stun = false;
     [Header("AI")]
     public bool isAI = true;
     public float aiTimeToUse = 10;
@@ -26,16 +27,26 @@ public class ItemScript : MonoBehaviour
     [Header("Reference")]
     public int aiHasMoreCheckpoints;
     public int aicheckpointsMoreAt;
+    [Header("Stun")]
+    public GameObject projectile;
+    public Transform firePoint;
+    public Transform firePoint2;
+    public Transform firePoint3;
+    public int firespeed;
     [Header("Other")]
     public GameObject sceneManager;
     MoneyManager moneyManager;
+    SaveData saveData;
     float itemCooldown;
     bool itemActive = false;
+    int amountOfMoney = 5;
+    bool upgraded = false;
 
     // Start is called before the first frame update
     void Start()
     {
         moneyManager = FindObjectOfType<MoneyManager>();
+        saveData = FindObjectOfType<SaveData>();
         defaultScale = transform.localScale;
         downScale = downScaleExample.localScale;
     }
@@ -46,18 +57,12 @@ public class ItemScript : MonoBehaviour
         itemCooldown -= Time.deltaTime;
         if (isAI == false && itemCooldown <= 0 && itemActive == false)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (saveData.GetBool("DevMode") == true)
             {
-                RandomUpgrade();
-            }
-            if (banana == true && Input.GetKeyDown(KeyCode.Q))
-            {
-                //Test , basically
-                itemCooldown = 1;
-                sceneManager.GetComponent<IconManager>().UnEquipUI(1);
-                EarnMoney();
-                randomUpgrade = 0;
-                banana = false;
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    RandomUpgrade();
+                }
             }
             if (banned == true && Input.GetKeyDown(KeyCode.Q))
             {
@@ -65,12 +70,16 @@ public class ItemScript : MonoBehaviour
                 //sets 2 random cars to 0 speed
                 int r = Random.Range(0, AI.Length);
                 GameObject i = AI[r];
-                i.GetComponent<CarController>().speed = 0;
-                Debug.Log("Killed " + i);
+                i.GetComponent<CarController>().speed = 2;
                 r = Random.Range(0, AI.Length);
                 i = AI[r];
-                i.GetComponent<CarController>().speed = 0;
-                Debug.Log("Killed " + i);
+                i.GetComponent<CarController>().speed = 2;
+                if (upgraded == true)
+                {
+                    r = Random.Range(0, AI.Length);
+                    i = AI[r];
+                    i.GetComponent<CarController>().speed = 2;
+                }
                 sceneManager.GetComponent<IconManager>().UnEquipUI(2);
                 EarnMoney();
                 randomUpgrade = 0;
@@ -79,11 +88,24 @@ public class ItemScript : MonoBehaviour
             if (scale == true && Input.GetKeyDown(KeyCode.Q))
             {
                 itemCooldown = 11;
+                if (upgraded == true)
+                {
+                    itemCooldown = 13;
+                }
                 //Scale down , Speed up
                 transform.localScale = downScale;
-                gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 2;
-                itemActive = true;
-                Invoke("Scaleup", 10f);
+                if (upgraded == true)
+                {
+                    gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 3;
+                    itemActive = true;
+                    Invoke("Scaleup", 12f);
+                }
+                else
+                {
+                    gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 2;
+                    itemActive = true;
+                    Invoke("Scaleup", 10f);
+                }
                 itemActive = false;
                 sceneManager.GetComponent<IconManager>().UnEquipUI(3);
                 EarnMoney();
@@ -95,7 +117,19 @@ public class ItemScript : MonoBehaviour
                 itemCooldown = 1;
                 //Its a jump.
                 Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-                rb.velocity = new Vector3(rb.velocity.x, 5, rb.velocity.z);
+                if (upgraded == true)
+                {
+                    rb.velocity = new Vector3(rb.velocity.x, 7, rb.velocity.z);
+                    gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 7.5f;
+                    gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed + 7.5f;
+                }
+                else
+                {
+                    rb.velocity = new Vector3(rb.velocity.x, 4, rb.velocity.z);
+                    gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 5;
+                    gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed + 5;
+                }
+                Invoke("Scaleup", 1f);
                 sceneManager.GetComponent<IconManager>().UnEquipUI(4);
                 EarnMoney();
                 randomUpgrade = 0;
@@ -120,57 +154,159 @@ public class ItemScript : MonoBehaviour
                 {
                     gameObject.GetComponent<CarController>().lapCounter++;
                 }
-                gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed / 3;
+                if (upgraded == true)
+                {
+                    gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed / 2;
+                }
+                else
+                {
+                    gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed / 3;
+                }
                 sceneManager.GetComponent<IconManager>().UnEquipUI(5);
                 EarnMoney();
                 randomUpgrade = 0;
                 reference = false;
             }
+            if (stun == true && Input.GetKeyDown(KeyCode.Q))
+            {
+                itemCooldown = 1;
+                if (upgraded == true)
+                {
+                    firespeed = firespeed + 5;
+                }
+                GameObject Bullet2 = Instantiate(projectile, firePoint2.position, firePoint2.rotation);
+                Bullet2.GetComponent<Rigidbody>().AddForce(-firePoint2.right * firespeed, ForceMode.Impulse);
+                if (upgraded == true)
+                {
+                    GameObject Bullet = Instantiate(projectile, firePoint.position, firePoint.rotation);
+                    Bullet.GetComponent<Rigidbody>().AddForce(-firePoint.right * firespeed, ForceMode.Impulse);
+                    GameObject Bullet3 = Instantiate(projectile, firePoint3.position, firePoint3.rotation);
+                    Bullet3.GetComponent<Rigidbody>().AddForce(-firePoint3.right * firespeed, ForceMode.Impulse);
+                }
+                sceneManager.GetComponent<IconManager>().UnEquipUI(6);
+                EarnMoney();
+                randomUpgrade = 0;
+                stun = false;
+            }
         }
-        else if (isAI == true && itemActive == false)
+        else if (isAI == true && itemActive == false && itemCooldown <= 0)
         {
             aiTimeToUse -= Time.deltaTime;
             if (aiTimeToUse <= 0)
             {
-                if (banana == true)
-                {
-                    //Test , basically
-                    Debug.Log("BANANA");
-                    randomUpgrade = 0;
-                    banana = false;
-                }
                 if (banned == true)
                 {
+                    itemCooldown = 1;
                     //sets 2 random cars to 0 speed
                     int r = Random.Range(0, AI.Length);
                     GameObject i = AI[r];
-                    i.GetComponent<CarController>().speed = 0;
-                    Debug.Log("AI Killed " + i);
+                    i.GetComponent<CarController>().speed = 2;
                     r = Random.Range(0, AI.Length);
                     i = AI[r];
-                    i.GetComponent<CarController>().speed = 0;
-                    Debug.Log(" AI Killed " + i);
+                    i.GetComponent<CarController>().speed = 2;
+                    if (upgraded == true)
+                    {
+                        r = Random.Range(0, AI.Length);
+                        i = AI[r];
+                        i.GetComponent<CarController>().speed = 2;
+                    }
                     randomUpgrade = 0;
                     banned = false;
                 }
                 if (scale == true)
                 {
+                    itemCooldown = 11;
+                    if (upgraded == true)
+                    {
+                        itemCooldown = 13;
+                    }
                     //Scale down , Speed up
                     transform.localScale = downScale;
-                    gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 2;
-                    itemActive = true;
-                    Invoke("Scaleup", 10f);
+                    if (upgraded == true)
+                    {
+                        gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 3;
+                        itemActive = true;
+                        Invoke("Scaleup", 12f);
+                    }
+                    else
+                    {
+                        gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 2;
+                        itemActive = true;
+                        Invoke("Scaleup", 10f);
+                    }
                     itemActive = false;
                     randomUpgrade = 0;
                     scale = false;
                 }
                 if (jump == true)
                 {
+                    itemCooldown = 1;
                     //Its a jump.
                     Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-                    rb.velocity = new Vector3(rb.velocity.x, 1, rb.velocity.z);
+                    if (upgraded == true)
+                    {
+                        rb.velocity = new Vector3(rb.velocity.x, 7, rb.velocity.z);
+                        gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 7.5f;
+                        gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed + 7.5f;
+                    }
+                    else
+                    {
+                        rb.velocity = new Vector3(rb.velocity.x, 4, rb.velocity.z);
+                        gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 5;
+                        gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed + 5;
+                    }
+                    Invoke("Scaleup", 1f);
                     randomUpgrade = 0;
                     jump = false;
+                }
+                if (reference == true)
+                {
+                    itemCooldown = 1;
+                    //Teleports you behind a random enemy car
+                    int i = Random.Range(0, AI.Length);
+                    transform.position = AIReference[i].transform.position;
+                    transform.rotation = AIReference[i].transform.rotation;
+                    if (AI[i].GetComponent<CarController>().checkPointCounter <= aicheckpointsMoreAt)
+                    {
+                        gameObject.GetComponent<CarController>().checkPointCounter = AI[i].GetComponent<CarController>().checkPointCounter;
+                    }
+                    else if (AI[i].GetComponent<CarController>().checkPointCounter > aicheckpointsMoreAt)
+                    {
+                        gameObject.GetComponent<CarController>().checkPointCounter = AI[i].GetComponent<CarController>().checkPointCounter - aiHasMoreCheckpoints;
+                    }
+                    if (gameObject.GetComponent<CarController>().lapCounter < AI[i].GetComponent<CarController>().lapCounter)
+                    {
+                        gameObject.GetComponent<CarController>().lapCounter++;
+                    }
+                    if (upgraded == true)
+                    {
+                        gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed / 2;
+                    }
+                    else
+                    {
+                        gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed / 3;
+                    }
+                    randomUpgrade = 0;
+                    reference = false;
+                }
+                if (stun == true)
+                {
+                    itemCooldown = 1;
+                    if (upgraded == true)
+                    {
+                        firespeed = firespeed + 5;
+                    }
+                    GameObject Bullet2 = Instantiate(projectile, firePoint2.position, firePoint2.rotation);
+                    Bullet2.GetComponent<Rigidbody>().AddForce(-firePoint2.right * firespeed, ForceMode.Impulse);
+                    if (upgraded == true)
+                    {
+                        GameObject Bullet = Instantiate(projectile, firePoint.position, firePoint.rotation);
+                        Bullet.GetComponent<Rigidbody>().AddForce(-firePoint.right * firespeed, ForceMode.Impulse);
+                        GameObject Bullet3 = Instantiate(projectile, firePoint3.position, firePoint3.rotation);
+                        Bullet3.GetComponent<Rigidbody>().AddForce(-firePoint3.right * firespeed, ForceMode.Impulse);
+                    }
+                    randomUpgrade = 0;
+                    stun = false;
                 }
             }
         }
@@ -179,9 +315,8 @@ public class ItemScript : MonoBehaviour
     {
         if (randomUpgrade == 0)
         {
-            randomUpgrade = Random.Range(1, 6);
-            //randomUpgrade = 5;
-            Debug.Log(randomUpgrade);
+            randomUpgrade = Random.Range(2, 7);
+            //randomUpgrade = 3;
             switch (randomUpgrade)
             {
                 case 1:
@@ -219,11 +354,17 @@ public class ItemScript : MonoBehaviour
                         sceneManager.GetComponent<IconManager>().EquipPowerup(5);
                     }
                     break;
+                case 6:
+                    stun = true;
+                    if (isAI == false)
+                    {
+                        sceneManager.GetComponent<IconManager>().EquipPowerup(6);
+                    }
+                    break;
             }
             if (isAI == true) 
             {
             aiTimeToUse = Random.Range(aiTTUMin, aiTTUMax);
-            Debug.Log("AI Powerup");
             }
         }
     }
@@ -234,6 +375,11 @@ public class ItemScript : MonoBehaviour
     }
     void EarnMoney()
     {
-        moneyManager.GainMoney(5);
+        moneyManager.GainMoney(amountOfMoney);
+    }
+    public void UpgradedUpgrades()
+    {
+        amountOfMoney = 7;
+        upgraded = true;
     }
 }

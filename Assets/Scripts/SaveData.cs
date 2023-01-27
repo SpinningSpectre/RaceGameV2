@@ -2,6 +2,7 @@ using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
 
 public class SaveData : MonoBehaviour
@@ -18,6 +19,7 @@ public class SaveData : MonoBehaviour
     public string carSkin { get; set; }
     public bool bool1 = false;
     MoneyManager moneyManager;
+    public bool freeDefault = false;
     private void Awake()
     {
         money = PlayerPrefs.GetFloat(moneyKey);
@@ -34,76 +36,65 @@ public class SaveData : MonoBehaviour
         if (PlayerPrefs.GetInt("1Up") == 1)
         {
             hasUpgrade[0] = true;
-            Debug.Log("Has 1");
         }
         if (PlayerPrefs.GetInt("2Up") == 1)
         {
             hasUpgrade[1] = true;
-            Debug.Log("Has 2");
         }
         if (PlayerPrefs.GetInt("3Up") == 1)
         {
             hasUpgrade[2] = true;
-            Debug.Log("Has 3");
         }
         if (PlayerPrefs.GetInt("4Up") == 1)
         {
             hasUpgrade[3] = true;
-            Debug.Log("Has 4");
         }
         if (PlayerPrefs.GetInt("5Up") == 1)
         {
             hasUpgrade[4] = true;
-            Debug.Log("Has 5");
         }
         if (PlayerPrefs.GetInt("6Up") == 1)
         {
             hasUpgrade[5] = true;
-            Debug.Log("Has 6");
         }
         if (PlayerPrefs.GetInt("7Up") == 1)
         {
             hasUpgrade[6] = true;
-            Debug.Log("Has 7");
         }
         CheckUpgradeAchievement();
+        if (freeDefault == true)
+        {
+            PlayerPrefs.SetInt("hasOld", true ? 1 : 0);
+        }
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (GetBool("DevMode") == true)
         {
-            SetMoney(0);
-            PlayerPrefs.SetString(upgradeKey, "");
-            for (int i = 0; i < hasUpgrade.Length + 1; i++)
+            if (Input.GetKeyDown(KeyCode.R))
             {
-                PlayerPrefs.SetInt(i + "Up", false ? 1 : 0);
-            }
-            for (int i = 0; i < hasAchievement.Length + 1; i++)
-            {
-                PlayerPrefs.SetInt(i + "Ach", false ? 1 : 0);
-            }
-            PlayerPrefs.SetInt("1Ach", false ? 1 : 0);
-            PlayerPrefs.SetInt("Wins", 0);
-            PlayerPrefs.SetFloat("TotalMoney", 0);
-            PlayerPrefs.SetString(carSkinKey, "");
-            for (int x = 0; x < hasUpgrade.Length; x++)
-            {
-                hasUpgrade[x] = false;
-            }
+                PlayerPrefs.DeleteAll();
+                SetPlayerName("Enter Player Name");
+                SaveFloat(1, "MMult");
+                SaveFloat(9999999, "BestRoundTime");
+                SaveInt("TimeBefore", 3);
+                SaveInt("Laps", 3);
                 Debug.Log("Reset Shit");
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            if (PlayerPrefs.GetInt("1Up") == 0)
-            {
-                //false
-                Debug.Log("is 0");
-            } else if (PlayerPrefs.GetInt("1Up") == 1)
-            {
-                //true
-                Debug.Log("is 1");
             }
-            PlayerPrefs.SetInt("1Up" , true ? 1 : 0);
+            if (Input.GetKeyDown(KeyCode.N))
+            {
+                if (PlayerPrefs.GetInt("1Up") == 0)
+                {
+                    //false
+                    Debug.Log("is 0");
+                }
+                else if (PlayerPrefs.GetInt("1Up") == 1)
+                {
+                    //true
+                    Debug.Log("is 1");
+                }
+                PlayerPrefs.SetInt("1Up", true ? 1 : 0);
+            }
         }
     }
     public void SetMoney(float money)
@@ -150,7 +141,6 @@ public class SaveData : MonoBehaviour
     }
     public void AchieveSomething(int achievement)
     {
-        Debug.Log("Has " + achievement);
         PlayerPrefs.SetInt(achievement + "Ach", true ? 1 : 0);
     }
     public bool CheckAchievement(int achievement)
@@ -185,5 +175,70 @@ public class SaveData : MonoBehaviour
             AchieveSomething(2);
         }
         Debug.Log(PlayerPrefs.GetInt("Wins") + "Wins");
+    }
+    public void SaveFloat(float number , string name)
+    {
+        PlayerPrefs.SetFloat(name, number);
+    }
+    public void SaveString(string word, string name)
+    {
+        PlayerPrefs.SetString(name, word);
+    }
+    public float GetFloat(string name)
+    {
+        return PlayerPrefs.GetFloat(name);
+    }
+    public int GetInt(string name)
+    {
+        return PlayerPrefs.GetInt(name);
+    }
+    public string GetString(string name)
+    {
+        return PlayerPrefs.GetString(name);
+    }
+    public void AddRaceTime(float time)
+    {
+        PlayerPrefs.SetFloat("TotalRaceTime", time + PlayerPrefs.GetFloat("TotalRaceTime"));
+    }
+    public void CheckBestTime(float time)
+    {
+        if (time < PlayerPrefs.GetFloat("BestRoundTime"))
+        {
+            PlayerPrefs.SetFloat("BestRoundTime" , time);
+        }
+    }
+    public void SetPlayerName(string name)
+    {
+        PlayerPrefs.SetString("PlayerName", name);
+    }
+    public bool hasOld()
+    {
+        bool bool2 = false;
+        if (PlayerPrefs.GetInt("hasOld") == 1)
+        {
+            bool2 = true;
+        }
+        return bool2;
+    }
+    public bool GetBool(string name)
+    {
+        bool bool2 = false;
+        if (PlayerPrefs.GetInt(name) == 1)
+        {
+            bool2 = true;
+        }
+        return bool2;
+    }
+    public void SetBoolTrue(string name)
+    {
+        PlayerPrefs.SetInt(name, true ? 1 : 0);
+    }
+    public void SetBoolFalse(string name)
+    {
+        PlayerPrefs.SetInt(name, false ? 1 : 0);
+    }
+    public void SaveInt(string name , int amount)
+    {
+        PlayerPrefs.SetInt(name, amount);
     }
 }

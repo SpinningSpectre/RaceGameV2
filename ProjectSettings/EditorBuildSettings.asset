@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Temporary/TestersNote.unity
     guid: da06b24ad517c984793bc0fe0d0beabf
+  - enabled: 1
+    path: Assets/Scenes/EndScreen.unity
+    guid: 1785883c974ff11458beff115b03f230
   m_configObjects: {}

@@ -10,15 +10,8 @@ public class PowerupSpawner : MonoBehaviour
     {
         Instantiate(powerBlock, transform.position, transform.rotation);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void SpawnBox()
     {
-        Debug.Log("Powerupblock");
         Instantiate(powerBlock, transform.position, transform.rotation);
     }
 }

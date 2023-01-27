@@ -12,45 +12,61 @@ public class MoneyManager : MonoBehaviour
     public float moneyK;
     public float moneyM;
     public float moneyMultiplier = 1;
+    public bool showsMoney = true;
     private void Start()
     {
         saveData = FindObjectOfType<SaveData>();
         money = saveData.money;
+        moneyMultiplier = saveData.GetFloat("MMult");
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+        if (saveData.GetBool("DevMode") == true)
         {
-            GainMoney(100);
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                GainMoney(100);
+            }
+            if (Input.GetKey(KeyCode.N))
+            {
+                GainMoney(100);
+            }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                GainMoney(-1);
+            }
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if (showsMoney == true)
         {
-            GainMoney(-1);
-            Debug.Log("Reset Shit");
+            if (money < 1000 && money >= 0)
+            {
+                moneyText.text = String.Format("{0:0}", money);
+            }
+            else if (money >= 1000 && money < 1000000)
+            {
+                moneyK = money / 1000;
+                moneyText.text = String.Format("{0:0.0}", moneyK) + "K";
+            }
+            else if (money < 0)
+            {
+                moneyText.text = money.ToString() + " MSG Me!";
+            }
+            else if (money == 1000000)
+            {
+                moneyK = money / 1000000;
+                moneyText.text = "1M";
+            }
+            else
+            {
+                moneyText.text = "I cant find out :(";
+            }
+            if (money > 1000000)
+            {
+                money = 1000000;
+                moneyText.text = "1M";
+            }
         }
-        if (money < 1000 && money >= 0)
-        {
-            moneyText.text = String.Format("{0:0}", money);
-        } else if (money >= 1000 && money < 1000000)
-        {
-            moneyK = money / 1000;
-            moneyText.text = String.Format("{0:0.0}", moneyK) + "K";
-        } else if (money < 0)
-        {
-            moneyText.text = money.ToString() + " MSG Me!";
-        } else if (money == 1000000)
-        {
-            moneyK = money / 1000000;
-            moneyText.text = "1M";
-        }
-        else
-        {
-            moneyText.text = "I cant find out :(";
-        }
-        if (money > 1000000)
-        {
-            money = 1000000;
-        }
+        saveData.SaveFloat(moneyMultiplier, "MMult");
     }
     public void GainMoney(float amount)
     {
@@ -61,7 +77,6 @@ public class MoneyManager : MonoBehaviour
         }
         else if (amount == -1)
         {
-            Debug.Log("is 0");
             saveData.SetMoney(0);
         }
         else

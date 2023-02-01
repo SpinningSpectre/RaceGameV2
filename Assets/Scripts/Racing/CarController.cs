@@ -197,14 +197,15 @@ public class CarController : MonoBehaviour
         {
             checkPointCounter = 0;
         }
-        /*        try
-                {
-                    currentCheckpoint = checkPoints[checkPointCounter];
-                } catch
-                {
+        try
+        {
+            currentCheckpoint = checkPoints[checkPointCounter];
+        }
+        catch
+        {
 
-                }*/
-        currentCheckpoint = checkPoints[checkPointCounter];
+        }
+        //currentCheckpoint = checkPoints[checkPointCounter];
 
         if (isAI == false && lapCounter >= winCount || endingManager.carsEnded == 3)
         {

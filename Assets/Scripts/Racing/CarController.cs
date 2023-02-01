@@ -168,7 +168,6 @@ public class CarController : MonoBehaviour
                 accel = 50;
                 if (checkPointCounter < checkPoints.Length - 1)
                 {
-
                     var rotationVector = transform.rotation.eulerAngles;
                     rotationVector.y = -60;
                     transform.rotation = transform.rotation = Quaternion.Euler(rotationVector);
@@ -198,7 +197,15 @@ public class CarController : MonoBehaviour
         {
             checkPointCounter = 0;
         }
+        /*        try
+                {
+                    currentCheckpoint = checkPoints[checkPointCounter];
+                } catch
+                {
+
+                }*/
         currentCheckpoint = checkPoints[checkPointCounter];
+
         if (isAI == false && lapCounter >= winCount || endingManager.carsEnded == 3)
         {
             if (iconManager.allCars[1] == iconManager.cars[0] || iconManager.allCars[2] == iconManager.cars[0] || iconManager.allCars[0] == iconManager.cars[0])
@@ -217,6 +224,7 @@ public class CarController : MonoBehaviour
             }
             timerCode.timerActive = false;
             timerCode.SaveTime();
+            iconManager.SavePlace();
             loader.LoadScene("EndScreen");
         }
         else if (isAI == true && endingManager.carsEnded != 5 && lapCounter == winCount && won == false)

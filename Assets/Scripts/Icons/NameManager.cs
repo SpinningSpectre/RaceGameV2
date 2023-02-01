@@ -39,14 +39,11 @@ public class NameManager : MonoBehaviour
     }
     public void nameChange()
     {
-        if (playerName != "Enter Player Name")
+        if (inStart == true)
         {
-            if (inStart == true)
-            {
-                nametext.transform.position = nameField.transform.position;
-                nametext.text = savedata.GetString("PlayerName");
-                nameField.transform.position = offScreen.position;
-            }
+            nametext.transform.position = nameField.transform.position;
+            nametext.text = savedata.GetString("PlayerName");
+            nameField.transform.position = offScreen.position;
         }
     }
 }

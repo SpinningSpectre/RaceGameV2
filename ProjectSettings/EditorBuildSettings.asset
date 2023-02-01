@@ -35,4 +35,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EndScreen.unity
     guid: 1785883c974ff11458beff115b03f230
+  - enabled: 1
+    path: Assets/Scenes/ChooseMap.unity
+    guid: 11f13b1f6a88ee345b10a4a193aeda82
+  - enabled: 1
+    path: Assets/Scenes/HousePath.unity
+    guid: 12193e43cf969204a8608aaa9622a43b
   m_configObjects: {}

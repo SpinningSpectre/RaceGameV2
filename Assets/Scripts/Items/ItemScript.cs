@@ -142,25 +142,28 @@ public class ItemScript : MonoBehaviour
                 int i = Random.Range(0, AI.Length);
                 transform.position = AIReference[i].transform.position;
                 transform.rotation = AIReference[i].transform.rotation;
-                if (AI[i].GetComponent<CarController>().checkPointCounter <= aicheckpointsMoreAt)
+                CarController playercar = gameObject.GetComponent<CarController>();
+                CarController aicar = AI[i].GetComponent<CarController>();
+                if (aicar.checkPointCounter <= aicheckpointsMoreAt)
                 {
-                    gameObject.GetComponent<CarController>().checkPointCounter = AI[i].GetComponent<CarController>().checkPointCounter;
+                    playercar.checkPointCounter = aicar.checkPointCounter;
                 }
                 else if (AI[i].GetComponent<CarController>().checkPointCounter > aicheckpointsMoreAt)
                 {
-                    gameObject.GetComponent<CarController>().checkPointCounter = AI[i].GetComponent<CarController>().checkPointCounter - aiHasMoreCheckpoints;
+                    playercar.checkPointCounter = aicar.checkPointCounter - aiHasMoreCheckpoints;
                 }
-                if (gameObject.GetComponent<CarController>().lapCounter < AI[i].GetComponent<CarController>().lapCounter)
+                if (playercar.lapCounter < aicar.lapCounter)
                 {
-                    gameObject.GetComponent<CarController>().lapCounter++;
+                    playercar.lapCounter++;
                 }
+                playercar.checkPointCounter = aicar.checkPointCounter - aiHasMoreCheckpoints;
                 if (upgraded == true)
                 {
-                    gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed / 2;
+                    playercar.speed = playercar.speed / 2;
                 }
                 else
                 {
-                    gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed / 3;
+                    playercar.speed = playercar.speed / 3;
                 }
                 sceneManager.GetComponent<IconManager>().UnEquipUI(5);
                 EarnMoney();
@@ -266,25 +269,28 @@ public class ItemScript : MonoBehaviour
                     int i = Random.Range(0, AI.Length);
                     transform.position = AIReference[i].transform.position;
                     transform.rotation = AIReference[i].transform.rotation;
-                    if (AI[i].GetComponent<CarController>().checkPointCounter <= aicheckpointsMoreAt)
+                    CarController playercar = gameObject.GetComponent<CarController>();
+                    CarController aicar = AI[i].GetComponent<CarController>();
+                    if (aicar.checkPointCounter <= aicheckpointsMoreAt)
                     {
-                        gameObject.GetComponent<CarController>().checkPointCounter = AI[i].GetComponent<CarController>().checkPointCounter;
+                        playercar.checkPointCounter = aicar.checkPointCounter;
                     }
                     else if (AI[i].GetComponent<CarController>().checkPointCounter > aicheckpointsMoreAt)
                     {
-                        gameObject.GetComponent<CarController>().checkPointCounter = AI[i].GetComponent<CarController>().checkPointCounter - aiHasMoreCheckpoints;
+                        playercar.checkPointCounter = aicar.checkPointCounter - aiHasMoreCheckpoints;
                     }
-                    if (gameObject.GetComponent<CarController>().lapCounter < AI[i].GetComponent<CarController>().lapCounter)
+                    if (playercar.lapCounter < aicar.lapCounter)
                     {
-                        gameObject.GetComponent<CarController>().lapCounter++;
+                        playercar.lapCounter++;
                     }
+                    playercar.checkPointCounter = aicar.checkPointCounter - aiHasMoreCheckpoints;
                     if (upgraded == true)
                     {
-                        gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed / 2;
+                        playercar.speed = playercar.speed / 2;
                     }
                     else
                     {
-                        gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed / 3;
+                        playercar.speed = playercar.speed / 3;
                     }
                     randomUpgrade = 0;
                     reference = false;
@@ -316,7 +322,7 @@ public class ItemScript : MonoBehaviour
         if (randomUpgrade == 0)
         {
             randomUpgrade = Random.Range(2, 7);
-            //randomUpgrade = 3;
+            //randomUpgrade = 5;
             switch (randomUpgrade)
             {
                 case 1:

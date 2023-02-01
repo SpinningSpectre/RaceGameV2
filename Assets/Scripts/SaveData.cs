@@ -73,13 +73,7 @@ public class SaveData : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                PlayerPrefs.DeleteAll();
-                SetPlayerName("Enter Player Name");
-                SaveFloat(1, "MMult");
-                SaveFloat(9999999, "BestRoundTime");
-                SaveInt("TimeBefore", 3);
-                SaveInt("Laps", 3);
-                Debug.Log("Reset Shit");
+                ResetAll();
             }
             if (Input.GetKeyDown(KeyCode.N))
             {
@@ -96,6 +90,16 @@ public class SaveData : MonoBehaviour
                 PlayerPrefs.SetInt("1Up", true ? 1 : 0);
             }
         }
+    }
+    public void ResetAll()
+    {
+        PlayerPrefs.DeleteAll();
+        SetPlayerName("Enter Player Name");
+        SaveFloat(1, "MMult");
+        SaveFloat(9999999, "BestRoundTime");
+        SaveInt("TimeBefore", 3);
+        SaveInt("Laps", 3);
+        Debug.Log("Reset Shit");
     }
     public void SetMoney(float money)
     {

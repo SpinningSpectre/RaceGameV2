@@ -19,6 +19,7 @@ public class IconManager : MonoBehaviour
     public List<GameObject> allCars;
     [SerializeField]
     List<Sprite> spriteRanking; 
+    SaveData saveData;
     [Header("Transforms")]
     public RectTransform noItems;
     public RectTransform powerupLocation;
@@ -34,6 +35,7 @@ public class IconManager : MonoBehaviour
     private void Start()
     {
         UnEquipAllItems();
+        saveData = FindObjectOfType<SaveData>();
     }
     private void Awake()
     {
@@ -54,6 +56,19 @@ public class IconManager : MonoBehaviour
         {
             rankingText[i].text = " " + rankingNumber[i] + ". " + allCars[i].GetComponent<CarController>().playerName;
             carImages[i].sprite = allCars[i].GetComponent<CarController>().sprite_name_idfk_ask_mike;
+        }
+    }
+    public void SavePlace()
+    {
+        for (int i = 0; i < allCars.Count; i++)
+        {
+            if (allCars[i] == cars[0])
+            {
+                saveData.SaveInt("Placement", i + 1);
+                Debug.Log(i);
+                Debug.Log(allCars[i]);
+                Debug.Log(cars[0]);
+            }
         }
     }
     public void EquipPowerup(int powerUpNumber)

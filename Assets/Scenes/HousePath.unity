@@ -913,7 +913,7 @@ MonoBehaviour:
   startTimerImage: {fileID: 1415887156}
   gameTime: 0
   lastRaceTime: 0
-  beforeStart: 2
+  beforeStart: 10
   startSize: 60
   bigSize: 90
   timerActive: 1

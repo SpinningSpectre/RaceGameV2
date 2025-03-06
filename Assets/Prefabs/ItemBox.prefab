@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3584766374524035820}
   - component: {fileID: 3584766374524035811}
   m_Layer: 0
-  m_Name: Item
+  m_Name: ItemBox
   m_TagString: PowerBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

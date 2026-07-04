@@ -119,13 +119,13 @@ public class ItemScript : MonoBehaviour
                 Rigidbody rb = gameObject.GetComponent<Rigidbody>();
                 if (upgraded == true)
                 {
-                    rb.velocity = new Vector3(rb.velocity.x, 7, rb.velocity.z);
+                    rb.linearVelocity = new Vector3(rb.linearVelocity.x, 7, rb.linearVelocity.z);
                     gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 7.5f;
                     gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed + 7.5f;
                 }
                 else
                 {
-                    rb.velocity = new Vector3(rb.velocity.x, 4, rb.velocity.z);
+                    rb.linearVelocity = new Vector3(rb.linearVelocity.x, 4, rb.linearVelocity.z);
                     gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 5;
                     gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed + 5;
                 }
@@ -248,13 +248,13 @@ public class ItemScript : MonoBehaviour
                     Rigidbody rb = gameObject.GetComponent<Rigidbody>();
                     if (upgraded == true)
                     {
-                        rb.velocity = new Vector3(rb.velocity.x, 7, rb.velocity.z);
+                        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 7, rb.linearVelocity.z);
                         gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 7.5f;
                         gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed + 7.5f;
                     }
                     else
                     {
-                        rb.velocity = new Vector3(rb.velocity.x, 4, rb.velocity.z);
+                        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 4, rb.linearVelocity.z);
                         gameObject.GetComponent<CarController>().maxSpeed = gameObject.GetComponent<CarController>().startingMaxSpeed + 5;
                         gameObject.GetComponent<CarController>().speed = gameObject.GetComponent<CarController>().speed + 5;
                     }
